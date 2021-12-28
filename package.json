@@ -1,0 +1,22 @@
+{
+  "type": "module",
+  "scripts": {
+    "start": "webpack serve",
+    "dev": "nodemon server.js",
+    "build": "NODE_ENV=production webpack",
+    "test": "jest",
+    "lint": "eslint --ext js,jsx,ts,tsx ./src/",
+    "lint:format": "eslint --fix --ext js,jsx,ts,tsx ./src/"
+  },
+  "dependencies": {
+    "@stanlemon/webdev": "0.1.9",
+    "@twilio/conversations": "2.0.0",
+    "dotenv": "10.0.0",
+    "express": "4.17.2",
+    "express-openid-connect": "2.5.2",
+    "twilio": "3.72.0"
+  },
+  "devDependencies": {
+    "nodemon": "2.0.15"
+  }
+}
