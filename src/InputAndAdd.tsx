@@ -3,7 +3,7 @@ import { Box, Label, Input, HelpText, Button } from "@twilio-paste/core/";
 
 export default function InputAndAdd({
   label = "Item",
-  helpText = "Add an item.",
+  helpText = "",
   button = "Add",
   onAdd,
 }) {
@@ -12,6 +12,12 @@ export default function InputAndAdd({
   const handleClick = () => {
     onAdd(value);
     setValue("");
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleClick();
+    }
   };
 
   return (
@@ -25,10 +31,11 @@ export default function InputAndAdd({
           id="item"
           type="text"
           onChange={(e) => setValue(e.currentTarget.value)}
+          onKeyPress={handleKeyPress}
           value={value}
           required
         />
-        <HelpText id="item_help_text">{helpText}</HelpText>
+        {helpText && <HelpText id="item_help_text">{helpText}</HelpText>}
       </Box>
       <Button variant="primary" onClick={handleClick}>
         {button}

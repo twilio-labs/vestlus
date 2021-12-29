@@ -26,26 +26,32 @@ export default function Conversation({ client, conversation }) {
     });
   }, []);
 
+  conversation.on("messageAdded", (message) =>
+    setMessages([...messages, message])
+  );
+
   const onAddParticipant = (address) => {
     addParticipant(conversation, address).then((participant) => {
-      console.log("adding participant", participant);
-      setParticipants([...participants, participants]);
+      setParticipants([...participants, participant]);
     });
   };
 
   const onAddMessage = (message) => {
     // Adding a message...
-    conversation.sendMessage(message).then((m) => {
-      console.log("message sent", m);
+    conversation.sendMessage(message).then((/* index of message */) => {
+      // Fetch the new messages after this one has been sent
+      conversation.getMessages().then(({ items: messages }) => {
+        setMessages(messages);
+      });
     });
   };
-  console.log(participants, messages);
+
   return (
     <Box>
       <Heading as="h1" variant="heading10">
         {conversation.friendlyName}
       </Heading>
-      <InputAndAdd onAdd={onAddParticipant} />
+      <InputAndAdd label="Participant" onAdd={onAddParticipant} />
       <ul>
         {participants.map((participant, i) => (
           <li key={i}>
@@ -63,7 +69,7 @@ export default function Conversation({ client, conversation }) {
           ) : {message.body}
         </li>
       ))}
-      <InputAndAdd onAdd={onAddMessage} />
+      <InputAndAdd label="Message" button="Send" onAdd={onAddMessage} />
     </Box>
   );
 }
