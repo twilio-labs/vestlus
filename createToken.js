@@ -17,6 +17,8 @@ export default async function createToken(
     await client.conversations.services.list({ limit: 1 })
   )?.[0];
 
+  console.log("Using service " + serviceSid);
+
   const chatGrant = new ChatGrant({
     serviceSid,
   });
