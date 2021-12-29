@@ -10,11 +10,16 @@
   },
   "dependencies": {
     "@stanlemon/webdev": "0.1.9",
+    "@twilio-paste/core": "10.18.0",
+    "@twilio-paste/icons": "5.9.0",
     "@twilio/conversations": "2.0.0",
     "dotenv": "10.0.0",
     "express": "4.17.2",
     "express-openid-connect": "2.5.2",
-    "twilio": "3.72.0"
+    "html-webpack-plugin": "4.5.2",
+    "prettier": "2.5.1",
+    "twilio": "3.72.0",
+    "webpack": "4.46.0"
   },
   "devDependencies": {
     "nodemon": "2.0.15"

@@ -1,23 +1,42 @@
 import React, { useState } from "react";
-import "./App.less";
+import { Theme } from "@twilio-paste/core/theme";
+import {
+  Box,
+  Card,
+  Heading,
+  Label,
+  Input,
+  HelpText,
+  Button,
+} from "@twilio-paste/core/";
 import { Client as TwilioClient } from "@twilio/conversations";
 
-function Input({ onClick }) {
+function ItemInput({ onAdd }) {
   const [value, setValue] = useState("");
 
   const handleClick = () => {
-    onClick(value);
+    onAdd(value);
     setValue("");
   };
 
   return (
     <>
-      <input
+      <Label htmlFor="item" required>
+        Item
+      </Label>
+      <Input
+        aria-describedby="item_help_text"
+        id="item"
         type="text"
         onChange={(e) => setValue(e.currentTarget.value)}
         value={value}
+        required
       />
-      <button onClick={handleClick}>Add</button>
+      <HelpText id="item_help_text">Add an item.</HelpText>
+
+      <Button variant="primary" onClick={handleClick}>
+        Add
+      </Button>
     </>
   );
 }
@@ -95,13 +114,26 @@ export default function App() {
   const [items, setItems] = useState([]);
   return (
     <Container>
-      <h1>Hello World!</h1>
-      <Input onClick={(item) => setItems([...items, item])} />
-      <ul>
-        {items.map((item, i) => (
-          <li key={i}>{item}</li>
-        ))}
-      </ul>
+      <Theme.Provider theme="default">
+        <Box margin="space100">
+          <Card padding="space100">
+            <Heading as="h1" variant="heading10">
+              Hello World!
+            </Heading>
+            <Box marginBottom="space100">
+              <ItemInput onAdd={(item) => setItems([...items, item])} />
+            </Box>
+            <Heading as="h2" variant="heading20">
+              Items
+            </Heading>
+            <ul>
+              {items.map((item, i) => (
+                <li key={i}>{item}</li>
+              ))}
+            </ul>
+          </Card>
+        </Box>
+      </Theme.Provider>
     </Container>
   );
 }
