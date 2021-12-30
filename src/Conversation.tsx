@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Box, Heading } from "@twilio-paste/core/";
 import InputAndAdd from "./InputAndAdd";
-import { DateTime } from "luxon";
+import ParticipantList from "./ParticipantList";
+import MessageList from "./MessageList";
 
 async function addParticipant(conversation, address) {
   if (address.substring(0, 1) === "+") {
@@ -16,15 +17,20 @@ export default function Conversation({ client, conversation }) {
   const [participants, setParticipants] = useState([]);
   const [messages, setMessages] = useState([]);
 
-  useEffect(() => {
+  const loadMessages = () =>
+    conversation.getMessages().then(({ items: messages }) => {
+      setMessages(messages);
+    });
+
+  const loadParticipants = () =>
     conversation.getParticipants().then((participants) => {
       setParticipants(participants);
     });
 
-    conversation.getMessages().then(({ items: messages }) => {
-      setMessages(messages);
-    });
-  }, []);
+  useEffect(() => {
+    loadParticipants();
+    loadMessages();
+  }, [conversation]);
 
   conversation.on("messageAdded", (message) =>
     setMessages([...messages, message])
@@ -40,9 +46,7 @@ export default function Conversation({ client, conversation }) {
     // Adding a message...
     conversation.sendMessage(message).then((/* index of message */) => {
       // Fetch the new messages after this one has been sent
-      conversation.getMessages().then(({ items: messages }) => {
-        setMessages(messages);
-      });
+      loadMessages();
     });
   };
 
@@ -52,23 +56,8 @@ export default function Conversation({ client, conversation }) {
         {conversation.friendlyName}
       </Heading>
       <InputAndAdd label="Participant" onAdd={onAddParticipant} />
-      <ul>
-        {participants.map((participant, i) => (
-          <li key={i}>
-            {i}
-            {participant.identity}
-          </li>
-        ))}
-      </ul>
-      {messages.map((message, i) => (
-        <li key={i}>
-          {message.author} (
-          {DateTime.fromJSDate(message.dateCreated).toLocaleString(
-            DateTime.DATETIME_SHORT
-          )}
-          ) : {message.body}
-        </li>
-      ))}
+      <ParticipantList participants={participants} />
+      <MessageList messages={messages} />
       <InputAndAdd label="Message" button="Send" onAdd={onAddMessage} />
     </Box>
   );
