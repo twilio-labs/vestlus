@@ -1,12 +1,23 @@
 import React from "react";
 import Client from "./Client";
 
-export default class Session extends React.Component {
+type Props = Record<string, unknown>;
+
+type State = {
+  loaded: boolean;
+  session: {
+    token: string;
+  };
+};
+
+export const SessionContext = React.createContext(null);
+export default class Session extends React.Component<Props, State> {
   constructor(props) {
     super(props);
 
     this.state = {
       loaded: false,
+      session: null,
     };
   }
 
@@ -20,6 +31,7 @@ export default class Session extends React.Component {
         session,
       });
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error(err);
 
       // Cross origin fun, redirect to login!
@@ -33,7 +45,11 @@ export default class Session extends React.Component {
     if (!this.state.loaded) {
       return <em>Loading...</em>;
     }
-
-    return <Client token={this.state.session.token} />;
+    console.log(this.state.session);
+    return (
+      <SessionContext.Provider value={this.state.session}>
+        <Client token={this.state.session.token} />
+      </SessionContext.Provider>
+    );
   }
 }

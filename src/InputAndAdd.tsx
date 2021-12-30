@@ -1,11 +1,16 @@
 import React, { useState } from "react";
-import { Box, Label, Input, HelpText, Button } from "@twilio-paste/core/";
+import { Box, Label, Input, Button, Flex } from "@twilio-paste/core/";
 
 export default function InputAndAdd({
   label = "Item",
-  helpText = "",
+  placeholder = "",
   button = "Add",
   onAdd,
+}: {
+  label?: string;
+  placeholder?: string;
+  button?: React.ReactNode;
+  onAdd: (value: string) => void;
 }) {
   const [value, setValue] = useState("");
 
@@ -22,24 +27,27 @@ export default function InputAndAdd({
 
   return (
     <>
-      <Box marginBottom="space60">
-        <Label htmlFor="item" required>
-          {label}
-        </Label>
-        <Input
-          aria-describedby="item_help_text"
-          id="item"
-          type="text"
-          onChange={(e) => setValue(e.currentTarget.value)}
-          onKeyPress={handleKeyPress}
-          value={value}
-          required
-        />
-        {helpText && <HelpText id="item_help_text">{helpText}</HelpText>}
+      <Box>
+        <Label htmlFor="item">{label}</Label>
       </Box>
-      <Button variant="primary" onClick={handleClick}>
-        {button}
-      </Button>
+      <Box>
+        <Flex>
+          <Input
+            aria-describedby="item_help_text"
+            id="item"
+            type="text"
+            onChange={(e) => setValue(e.currentTarget.value)}
+            onKeyPress={handleKeyPress}
+            value={value}
+            placeholder={placeholder}
+            required
+          />
+          &nbsp;
+          <Button variant="primary" onClick={handleClick}>
+            {button}
+          </Button>
+        </Flex>
+      </Box>
     </>
   );
 }
