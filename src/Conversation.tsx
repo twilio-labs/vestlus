@@ -50,6 +50,7 @@ export default function Conversation({ client, conversation }) {
   const onAddParticipant = (address, proxyAddress) => {
     addParticipant(conversation, address, proxyAddress).then((participant) => {
       // This is a workaround for a bug, where the attributes come back as a string rather than the object
+      // https://issues.corp.twilio.com/browse/RTDSDK-3278
       participant.attributes = JSON.parse(participant.attributes);
       setParticipants([...participants, participant]);
     });
