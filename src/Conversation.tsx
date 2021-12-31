@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Heading, Box, Flex } from "@twilio-paste/core/";
+import { Heading, Box } from "@twilio-paste/core/";
 import InputAndAdd from "./InputAndAdd";
 import ParticipantList from "./ParticipantList";
 import MessageList from "./MessageList";

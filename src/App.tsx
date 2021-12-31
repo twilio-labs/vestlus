@@ -1,15 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Theme } from "@twilio-paste/core/theme";
 import { NewIcon } from "@twilio-paste/icons/esm/NewIcon";
-import {
-  Box,
-  Button,
-  Column,
-  Flex,
-  Grid,
-  Text,
-  AlertDialog,
-} from "@twilio-paste/core/";
+import { Box, Button, Flex, Text, AlertDialog } from "@twilio-paste/core/";
 import { ProductConversationsIcon } from "@twilio-paste/icons/esm/ProductConversationsIcon";
 import { DeleteIcon } from "@twilio-paste/icons/esm/DeleteIcon";
 

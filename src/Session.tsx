@@ -45,7 +45,7 @@ export default class Session extends React.Component<Props, State> {
     if (!this.state.loaded) {
       return <em>Loading...</em>;
     }
-    console.log(this.state.session);
+
     return (
       <SessionContext.Provider value={this.state.session}>
         <Client token={this.state.session.token} />
