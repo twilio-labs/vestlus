@@ -5,12 +5,12 @@ import ParticipantList from "./ParticipantList";
 import MessageList from "./MessageList";
 import { ChatIcon } from "@twilio-paste/icons/esm/ChatIcon";
 import { UserIcon } from "@twilio-paste/icons/esm/UserIcon";
+import { SessionContext } from "./Session";
 
-async function addParticipant(conversation, address) {
+async function addParticipant(conversation, address, proxyAddress = null) {
   // Store this in attributes because we don't have any other way to get to it for non-chat participants
   const attributes = { identity: address };
   if (address.substring(0, 1) === "+") {
-    const proxyAddress = "+15173002340";
     return conversation.addNonChatParticipant(
       proxyAddress,
       address,
@@ -47,8 +47,8 @@ export default function Conversation({ client, conversation }) {
     setMessages([...messages, message])
   );
 
-  const onAddParticipant = (address) => {
-    addParticipant(conversation, address).then((participant) => {
+  const onAddParticipant = (address, proxyAddress) => {
+    addParticipant(conversation, address, proxyAddress).then((participant) => {
       // This is a workaround for a bug, where the attributes come back as a string rather than the object
       participant.attributes = JSON.parse(participant.attributes);
       setParticipants([...participants, participant]);
@@ -70,31 +70,40 @@ export default function Conversation({ client, conversation }) {
   };
 
   return (
-    <>
-      <Box height="150px">
-        <Heading as="h1" variant="heading10" marginBottom="space0">
-          {conversation.friendlyName}
-        </Heading>
-        <ParticipantList
-          participants={participants}
-          onDelete={onRemoveParticipant}
-        />
-        <Box marginTop="space30" marginBottom="space30">
-          <InputAndAdd
-            label="Add a Participant"
-            onAdd={onAddParticipant}
-            button={<UserIcon decorative={false} title="Add a Participant" />}
-          />
-        </Box>
-      </Box>
-      <MessageList messages={messages} />
-      <Box height="60px">
-        <InputAndAdd
-          label="Send a Message"
-          onAdd={onAddMessage}
-          button={<ChatIcon decorative={false} title="Send a Message" />}
-        />
-      </Box>
-    </>
+    <SessionContext.Consumer>
+      {(session) => (
+        <>
+          <Box height="150px">
+            <Heading as="h1" variant="heading10" marginBottom="space0">
+              {conversation.friendlyName}
+            </Heading>
+            <ParticipantList
+              participants={participants}
+              onDelete={onRemoveParticipant}
+            />
+            <Box marginTop="space30" marginBottom="space30">
+              <InputAndAdd
+                label="Add a Participant"
+                onAdd={(address) =>
+                  // TODO: The user should be able to select the proxy address from the list
+                  onAddParticipant(address, session.phoneNumbers[0].phoneNumber)
+                }
+                button={
+                  <UserIcon decorative={false} title="Add a Participant" />
+                }
+              />
+            </Box>
+          </Box>
+          <MessageList messages={messages} />
+          <Box height="60px">
+            <InputAndAdd
+              label="Send a Message"
+              onAdd={onAddMessage}
+              button={<ChatIcon decorative={false} title="Send a Message" />}
+            />
+          </Box>
+        </>
+      )}
+    </SessionContext.Consumer>
   );
 }

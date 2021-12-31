@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import openid from "express-openid-connect";
-import createToken from "./createToken.js";
+import createSession from "./createSession.js";
 
 dotenv.config();
 
@@ -42,7 +42,7 @@ app.get("/login", (req, res) => {
 });
 
 app.get("/session", requiresAuth(), async (req, res, next) => {
-  const token = await createToken(
+  const session = await createSession(
     process.env.TWILIO_ACCOUNT_SID,
     process.env.TWILIO_API_KEY,
     process.env.TWILIO_API_SECRET,
@@ -50,7 +50,7 @@ app.get("/session", requiresAuth(), async (req, res, next) => {
   );
 
   res.json({
-    token: token,
+    ...session,
     user: req.oidc.user,
   });
 });
