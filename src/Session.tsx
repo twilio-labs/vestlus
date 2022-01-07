@@ -1,5 +1,6 @@
 import React from "react";
 import Client from "./Client";
+import SessionContext from "./SessionContext";
 
 type Props = Record<string, unknown>;
 
@@ -9,8 +10,6 @@ type State = {
     token: string;
   };
 };
-
-export const SessionContext = React.createContext(null);
 export default class Session extends React.Component<Props, State> {
   constructor(props) {
     super(props);

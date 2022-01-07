@@ -2,10 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Heading, Box } from "@twilio-paste/core/";
 import InputAndAdd from "./InputAndAdd";
 import ParticipantList from "./ParticipantList";
-import MessageList from "./MessageList";
-import { ChatIcon } from "@twilio-paste/icons/esm/ChatIcon";
+import Messages from "./Messages";
 import { UserIcon } from "@twilio-paste/icons/esm/UserIcon";
-import { SessionContext } from "./Session";
+import SessionContext from "./SessionContext";
 
 async function addParticipant(conversation, address, proxyAddress = null) {
   // Store this in attributes because we don't have any other way to get to it for non-chat participants
@@ -26,12 +25,6 @@ async function removeParticipant(participant) {
 
 export default function Conversation({ client, conversation }) {
   const [participants, setParticipants] = useState([]);
-  const [messages, setMessages] = useState([]);
-
-  const loadMessages = () =>
-    conversation.getMessages().then(({ items: messages }) => {
-      setMessages(messages);
-    });
 
   const loadParticipants = () =>
     conversation.getParticipants().then((participants) => {
@@ -40,12 +33,7 @@ export default function Conversation({ client, conversation }) {
 
   useEffect(() => {
     loadParticipants();
-    loadMessages();
   }, [conversation]);
-
-  conversation.on("messageAdded", (message) =>
-    setMessages([...messages, message])
-  );
 
   const onAddParticipant = (address, proxyAddress) => {
     addParticipant(conversation, address, proxyAddress).then((participant) => {
@@ -60,14 +48,6 @@ export default function Conversation({ client, conversation }) {
     removeParticipant(participant).then(() =>
       setParticipants(participants.filter((p) => p.sid !== participant.sid))
     );
-  };
-
-  const onAddMessage = (message) => {
-    // Adding a message...
-    conversation.sendMessage(message).then((/* index of message */) => {
-      // Fetch the new messages after this one has been sent
-      loadMessages();
-    });
   };
 
   return (
@@ -95,14 +75,7 @@ export default function Conversation({ client, conversation }) {
               />
             </Box>
           </Box>
-          <MessageList messages={messages} />
-          <Box height="60px">
-            <InputAndAdd
-              label="Send a Message"
-              onAdd={onAddMessage}
-              button={<ChatIcon decorative={false} title="Send a Message" />}
-            />
-          </Box>
+          <Messages conversation={conversation} />
         </>
       )}
     </SessionContext.Consumer>
