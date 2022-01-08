@@ -9,6 +9,7 @@ const { auth, requiresAuth } = openid;
 
 const app = express();
 const port = process.env.PORT || 3000;
+// TODO. This should be derived from a host, protocol and the previously designated port
 const baseURL = process.env.BASE_URL || `http://localhost:${port}`;
 
 app.use(
