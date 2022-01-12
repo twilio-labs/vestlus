@@ -6,50 +6,61 @@ import { ProductConversationsIcon } from "@twilio-paste/icons/esm/ProductConvers
 import { DeleteIcon } from "@twilio-paste/icons/esm/DeleteIcon";
 
 import InputAndAdd from "./InputAndAdd";
-import Conversation from "./Conversation";
+import ConversationView from "./Conversation";
 import Spacer from "./Spacer";
+import { Client, Conversation } from "@twilio/conversations";
 
-async function getConversations(client) {
+async function getConversations(client: Client) {
   const conversations = await client.getSubscribedConversations();
   return conversations;
 }
 
-async function createConversation(client, name) {
+async function createConversation(
+  client: Client,
+  name: string
+): Promise<Conversation> {
   try {
     const conversation = await client.createConversation({
       friendlyName: name,
       uniqueName: name,
     });
-    conversation.join(); // Join the conversation that we just created!
+    await conversation.join(); // Join the conversation that we just created!
     return conversation;
   } catch (err) {
     // TODO: Check for Error: Conflict
     // eslint-disable-next-line no-console
     console.error(err);
+    throw err;
   }
 }
 
-async function deleteConversation(conversation) {
+async function deleteConversation(
+  conversation: Conversation
+): Promise<Conversation> {
   try {
     return await conversation.delete();
   } catch (err) {
     // eslint-disable-next-line no-console
     console.error(err);
+    throw err;
   }
 }
 
 // eslint-disable-next-line max-lines-per-function
-export default function App({ client }) {
-  const [conversations, setConversations] = useState([]);
-  const [activeConversation, setActiveConversation] = useState(null);
+export default function App({ client }: { client: Client }) {
+  const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [activeConversation, setActiveConversation] =
+    useState<Conversation | null>(null);
 
   useEffect(() => {
-    getConversations(client).then((conversations) => {
-      setConversations(conversations.items);
-    });
+    getConversations(client)
+      .then((conversations) => {
+        setConversations(conversations.items);
+      })
+      .catch((err) => console.error(err));
   }, []);
 
-  const onAdd = (name) =>
+  const onAdd = (name: string) =>
     createConversation(client, name).then((conversation) =>
       setConversations([...conversations, conversation])
     );
@@ -97,7 +108,10 @@ export default function App({ client }) {
           }}
         >
           {activeConversation && (
-            <Conversation client={client} conversation={activeConversation} />
+            <ConversationView
+              client={client}
+              conversation={activeConversation}
+            />
           )}
         </div>
       </Flex>
@@ -105,16 +119,26 @@ export default function App({ client }) {
   );
 }
 
-function ConversationListItem({ conversation, onSelect, onDelete }) {
+function ConversationListItem({
+  conversation,
+  onSelect,
+  onDelete,
+}: {
+  conversation: Conversation;
+  onSelect: () => void;
+  onDelete: (conversation: Conversation) => void;
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const handleOpen = () => setIsOpen(true);
   const handleDismiss = () => setIsOpen(false);
   const handleClose = () => {
     setIsOpen(false);
     // TODO: Should deleteConversation be done inside onDelete()?
-    deleteConversation(conversation).then((conversation) =>
-      onDelete(conversation)
-    );
+    deleteConversation(conversation)
+      .then((conversation) => {
+        onDelete(conversation);
+      })
+      .catch((err) => console.error(err));
   };
 
   return (

@@ -3,7 +3,7 @@ import { Client as TwilioClient } from "@twilio/conversations";
 import App from "./App";
 
 type Props = {
-  token: string;
+  token: string | null;
 };
 
 type State = {
@@ -13,16 +13,18 @@ type State = {
 export default class Client extends React.Component<Props, State> {
   client: TwilioClient;
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
 
     this.state = {
       initialized: false,
     };
-  }
 
-  componentDidMount(): void {
-    this.client = new TwilioClient(this.props.token);
+    if (!props.token) {
+      throw new Error("Token is required");
+    }
+
+    this.client = new TwilioClient(props.token);
     // Before you use the client, subscribe to the `'stateChanged'` event and wait
     // for the `'initialized'` state to be reported.
     this.client.on("stateChanged", (state) => {

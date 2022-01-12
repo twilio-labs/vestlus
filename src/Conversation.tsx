@@ -5,11 +5,16 @@ import ParticipantList from "./ParticipantList";
 import Messages from "./Messages";
 import { UserIcon } from "@twilio-paste/icons/esm/UserIcon";
 import SessionContext from "./SessionContext";
+import { Client, Conversation, Participant } from "@twilio/conversations";
 
-async function addParticipant(conversation, address, proxyAddress = null) {
+async function addParticipant(
+  conversation: Conversation,
+  address: string,
+  proxyAddress: string | null = null
+) {
   // Store this in attributes because we don't have any other way to get to it for non-chat participants
   const attributes = { identity: address };
-  if (address.substring(0, 1) === "+") {
+  if (address.substring(0, 1) === "+" && proxyAddress !== null) {
     return conversation.addNonChatParticipant(
       proxyAddress,
       address,
@@ -19,15 +24,21 @@ async function addParticipant(conversation, address, proxyAddress = null) {
     return conversation.add(address, attributes);
   }
 }
-async function removeParticipant(participant) {
+async function removeParticipant(participant: Participant) {
   return await participant.remove();
 }
 
-export default function Conversation({ client, conversation }) {
-  const [participants, setParticipants] = useState([]);
+export default function ConversationView({
+  client,
+  conversation,
+}: {
+  client: Client;
+  conversation: Conversation;
+}) {
+  const [participants, setParticipants] = useState<Participant[]>([]);
 
   const loadParticipants = () =>
-    conversation.getParticipants().then((participants) => {
+    conversation.getParticipants().then((participants: Participant[]) => {
       setParticipants(participants);
     });
 
@@ -35,16 +46,18 @@ export default function Conversation({ client, conversation }) {
     loadParticipants();
   }, [conversation]);
 
-  const onAddParticipant = (address, proxyAddress) => {
-    addParticipant(conversation, address, proxyAddress).then((participant) => {
-      // This is a workaround for a bug, where the attributes come back as a string rather than the object
-      // https://issues.corp.twilio.com/browse/RTDSDK-3278
-      participant.attributes = JSON.parse(participant.attributes);
-      setParticipants([...participants, participant]);
-    });
+  const onAddParticipant = (address: string, proxyAddress: string) => {
+    addParticipant(conversation, address, proxyAddress).then(
+      (participant: Participant) => {
+        // This is a workaround for a bug, where the attributes come back as a string rather than the object
+        // https://issues.corp.twilio.com/browse/RTDSDK-3278
+        participant.attributes = JSON.parse(participant.attributes);
+        setParticipants([...participants, participant]);
+      }
+    );
   };
 
-  const onRemoveParticipant = (participant) => {
+  const onRemoveParticipant = (participant: Participant) => {
     removeParticipant(participant).then(() =>
       setParticipants(participants.filter((p) => p.sid !== participant.sid))
     );

@@ -2,76 +2,93 @@ import React from "react";
 import { DateTime } from "luxon";
 import { Box } from "@twilio-paste/core/";
 import { ChatIcon } from "@twilio-paste/icons/esm/ChatIcon";
-import { ChatFeed, Message } from "react-chat-ui";
-import SessionContext from "./SessionContext";
+import { ChatFeed, Message as ChatMessage } from "react-chat-ui";
+import SessionContext, { SessionContextType } from "./SessionContext";
 import InputAndAdd from "./InputAndAdd";
-import { Conversation } from "@twilio/conversations";
+import { Conversation, Message } from "@twilio/conversations";
 
 type Props = {
   conversation: Conversation;
 };
 type State = {
-  messages: Message[];
+  messages: ChatMessage[];
 };
 
-export default class Messages extends React.Component<Props, State> {
+export default class Messages extends React.Component<
+  Props,
+  State,
+  SessionContextType
+> {
   static contextType = SessionContext;
+  declare context: React.ContextType<typeof SessionContext>;
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
 
     this.state = {
       messages: [],
     };
+  }
 
-    this.props.conversation.on("messageAdded", (message) => {
+  formatDate(date: Date): string {
+    return DateTime.fromJSDate(date).toLocaleString(DateTime.DATETIME_SHORT);
+  }
+
+  onAddMessage = async (message: string) => {
+    await this.props.conversation.sendMessage(message);
+  };
+
+  async loadMessages() {
+    const { items: messages } = await this.props.conversation.getMessages();
+    this.setState({
+      messages: messages.map(
+        (message: Message) =>
+          new ChatMessage({
+            id: this.context?.user.nickname === message.author ? 0 : 1,
+            message: message.body,
+          })
+      ),
+    });
+  }
+
+  addMessageListener(conversation: Conversation) {
+    conversation.on("messageAdded", (message) => {
       this.setState((state, props) => {
-        return {
+        const result = {
           messages: [
             ...state.messages,
-            new Message({
-              id: this.context.user.nickname === message.author ? 0 : 1,
+            new ChatMessage({
+              id: this.context?.user.nickname === message.author ? 0 : 1,
               message: message.body,
             }),
           ],
         };
+        return result;
       });
     });
   }
 
-  formatDate(date) {
-    return DateTime.fromJSDate(date).toLocaleString(DateTime.DATETIME_SHORT);
+  async componentDidMount(): Promise<void> {
+    this.addMessageListener(this.props.conversation);
+
+    await this.loadMessages();
   }
 
-  onAddMessage = (message) => {
-    this.props.conversation.sendMessage(message);
-  };
-
-  loadMessages() {
-    this.props.conversation.getMessages().then(({ items: messages }) => {
-      this.setState({
-        messages: messages.map(
-          (message) =>
-            new Message({
-              id: this.context.user.nickname === message.author ? 0 : 1,
-              message: message.body,
-            })
-        ),
-      });
-    });
+  /*
+  componentWillUnmount() {
+    // TODO: Remove listeners?
   }
+  */
 
-  componentDidMount(): void {
-    this.loadMessages();
-  }
-
-  componentDidUpdate(prevProps): void {
+  async componentDidUpdate(prevProps: Props): Promise<void> {
     if (prevProps.conversation.sid === this.props.conversation.sid) {
       return;
     }
 
+    this.addMessageListener(this.props.conversation);
+
     // The conversation has changed and so we need to reload our messages
-    this.loadMessages();
+    await this.loadMessages();
   }
 
   render() {

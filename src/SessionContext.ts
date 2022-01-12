@@ -1,5 +1,12 @@
 import React from "react";
 
-const SessionContext = React.createContext(null);
+export type SessionContextType = {
+  token: string;
+  user: {
+    nickname: string;
+  };
+} | null;
+
+const SessionContext = React.createContext<SessionContextType>(null);
 
 export default SessionContext;

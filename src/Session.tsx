@@ -1,17 +1,15 @@
 import React from "react";
 import Client from "./Client";
-import SessionContext from "./SessionContext";
+import SessionContext, { SessionContextType } from "./SessionContext";
 
 type Props = Record<string, unknown>;
 
 type State = {
   loaded: boolean;
-  session: {
-    token: string;
-  };
+  session: SessionContextType;
 };
 export default class Session extends React.Component<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
 
     this.state = {
@@ -23,7 +21,7 @@ export default class Session extends React.Component<Props, State> {
   async componentDidMount(): Promise<void> {
     try {
       const response = await fetch("/session");
-      const session = await response.json();
+      const session = (await response.json()) as { token: string };
 
       this.setState({
         loaded: true,
@@ -47,7 +45,7 @@ export default class Session extends React.Component<Props, State> {
 
     return (
       <SessionContext.Provider value={this.state.session}>
-        <Client token={this.state.session.token} />
+        <Client token={this.state?.session?.token || null} />
       </SessionContext.Provider>
     );
   }

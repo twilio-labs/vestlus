@@ -19,7 +19,7 @@ export default function InputAndAdd({
     setValue("");
   };
 
-  const handleKeyPress = (event) => {
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       handleClick();
     }
