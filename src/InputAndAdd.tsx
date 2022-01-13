@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Box, Label, Input, Button, Flex } from "@twilio-paste/core/";
 
 export default function InputAndAdd({

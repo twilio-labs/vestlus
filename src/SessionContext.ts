@@ -5,6 +5,7 @@ export type SessionContextType = {
   user: {
     nickname: string;
   };
+  phoneNumbers: { phoneNumber: string }[];
 } | null;
 
 const SessionContext = React.createContext<SessionContextType>(null);

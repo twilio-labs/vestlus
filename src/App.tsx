@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Theme } from "@twilio-paste/core/theme";
 import { NewIcon } from "@twilio-paste/icons/esm/NewIcon";
 import { Box, Button, Flex, Text, AlertDialog } from "@twilio-paste/core/";
 import { ProductConversationsIcon } from "@twilio-paste/icons/esm/ProductConversationsIcon";
 import { DeleteIcon } from "@twilio-paste/icons/esm/DeleteIcon";
-
+import { Client, Conversation } from "@twilio/conversations";
 import InputAndAdd from "./InputAndAdd";
 import ConversationView from "./Conversation";
 import Spacer from "./Spacer";
-import { Client, Conversation } from "@twilio/conversations";
 
 async function getConversations(client: Client) {
   const conversations = await client.getSubscribedConversations();
@@ -19,31 +18,18 @@ async function createConversation(
   client: Client,
   name: string
 ): Promise<Conversation> {
-  try {
-    const conversation = await client.createConversation({
-      friendlyName: name,
-      uniqueName: name,
-    });
-    await conversation.join(); // Join the conversation that we just created!
-    return conversation;
-  } catch (err) {
-    // TODO: Check for Error: Conflict
-    // eslint-disable-next-line no-console
-    console.error(err);
-    throw err;
-  }
+  const conversation = await client.createConversation({
+    friendlyName: name,
+    uniqueName: name,
+  });
+  await conversation.join(); // Join the conversation that we just created!
+  return conversation;
 }
 
 async function deleteConversation(
   conversation: Conversation
 ): Promise<Conversation> {
-  try {
-    return await conversation.delete();
-  } catch (err) {
-    // eslint-disable-next-line no-console
-    console.error(err);
-    throw err;
-  }
+  return await conversation.delete();
 }
 
 // eslint-disable-next-line max-lines-per-function
@@ -58,7 +44,7 @@ export default function App({ client }: { client: Client }) {
         setConversations(conversations.items);
       })
       .catch((err) => console.error(err));
-  }, []);
+  }, [client]);
 
   const onAdd = (name: string) =>
     createConversation(client, name).then((conversation) =>
@@ -131,14 +117,10 @@ function ConversationListItem({
   const [isOpen, setIsOpen] = useState(false);
   const handleOpen = () => setIsOpen(true);
   const handleDismiss = () => setIsOpen(false);
-  const handleClose = () => {
+  const handleClose = async () => {
     setIsOpen(false);
-    // TODO: Should deleteConversation be done inside onDelete()?
-    deleteConversation(conversation)
-      .then((conversation) => {
-        onDelete(conversation);
-      })
-      .catch((err) => console.error(err));
+    await deleteConversation(conversation);
+    onDelete(conversation);
   };
 
   return (

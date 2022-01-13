@@ -1,18 +1,26 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Text,
   AlertDialog,
   useFormPillState,
   FormPillGroup,
   FormPill,
+  FormPillStateReturn,
 } from "@twilio-paste/core/";
+import { Participant } from "@twilio/conversations";
 
-export default function ParticipantList({ participants, onDelete }) {
+export default function ParticipantList({
+  participants,
+  onDelete,
+}: {
+  participants: Participant[];
+  onDelete: (participant: Participant) => void;
+}) {
   const pillState = useFormPillState();
 
   return (
     <FormPillGroup {...pillState} aria-label="Conversation participants:">
-      {participants.map((participant, index) => (
+      {participants.map((participant) => (
         <ParticipantListItem
           key={participant.sid}
           participant={participant}
@@ -25,7 +33,15 @@ export default function ParticipantList({ participants, onDelete }) {
   );
 }
 
-function ParticipantListItem({ pillState, participant, onDelete }) {
+function ParticipantListItem({
+  pillState,
+  participant,
+  onDelete,
+}: {
+  pillState: FormPillStateReturn;
+  participant: Participant;
+  onDelete: (participant: Participant) => void;
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const handleOpen = () => setIsOpen(true);
   const handleDismiss = () => setIsOpen(false);
@@ -34,11 +50,12 @@ function ParticipantListItem({ pillState, participant, onDelete }) {
     onDelete(participant);
   };
 
+  const attributes = participant?.attributes as { identity: string } | null;
+
   return (
     <>
       <FormPill {...pillState} onDismiss={handleOpen}>
-        {participant.identity ||
-          (participant.attributes && participant.attributes.identity)}
+        {participant.identity || (attributes && attributes.identity)}
       </FormPill>
       <AlertDialog
         heading="Remove Participant"

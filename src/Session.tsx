@@ -19,23 +19,13 @@ export default class Session extends React.Component<Props, State> {
   }
 
   async componentDidMount(): Promise<void> {
-    try {
-      const response = await fetch("/session");
-      const session = (await response.json()) as { token: string };
+    const response = await fetch("/session");
+    const session = (await response.json()) as SessionContextType;
 
-      this.setState({
-        loaded: true,
-        session,
-      });
-    } catch (err) {
-      // eslint-disable-next-line no-console
-      console.error(err);
-
-      // Cross origin fun, redirect to login!
-      if (err.message === "Failed to fetch") {
-        window.location.href = "/login?dev=1";
-      }
-    }
+    this.setState({
+      loaded: true,
+      session,
+    });
   }
 
   render() {

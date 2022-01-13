@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import openid from "express-openid-connect";
 import createSession from "./createSession.js";
+import { createProxyMiddleware } from "http-proxy-middleware";
 
 dotenv.config();
 
@@ -56,7 +57,27 @@ app.get("/session", requiresAuth(), async (req, res, next) => {
   });
 });
 
-app.use(express.static("./dist"));
+// TODO: This should only be done in prod
+//app.use(express.static("./dist"));
+
+//app.use(express.static("./dist"));
+// TODO: This should only be done in dev
+app.use(
+  "/*.js",
+  createProxyMiddleware({
+    target: "http://localhost:8080/",
+    changeOrigin: true,
+  })
+);
+
+// TODO: This should only be done in dev
+app.use(
+  "/",
+  createProxyMiddleware({
+    target: "http://localhost:8080/",
+    changeOrigin: true,
+  })
+);
 
 app.listen(port, () => {
   console.log(`Listening at ${baseURL}`);
