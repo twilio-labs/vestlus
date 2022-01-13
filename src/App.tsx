@@ -5,9 +5,9 @@ import { Box, Button, Flex, Text, AlertDialog } from "@twilio-paste/core/";
 import { ProductConversationsIcon } from "@twilio-paste/icons/esm/ProductConversationsIcon";
 import { DeleteIcon } from "@twilio-paste/icons/esm/DeleteIcon";
 import { Client, Conversation } from "@twilio/conversations";
-import InputAndAdd from "./InputAndAdd";
-import ConversationView from "./Conversation";
-import Spacer from "./Spacer";
+import InputAndAdd from "./components/InputAndAdd";
+import ConversationView from "./views/ConversationView";
+import Spacer from "./components/Spacer";
 
 async function getConversations(client: Client) {
   const conversations = await client.getSubscribedConversations();
