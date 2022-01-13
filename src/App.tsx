@@ -46,20 +46,42 @@ export default function App({ client }: { client: Client }) {
       .catch((err) => console.error(err));
   }, [client]);
 
-  const onAdd = (name: string) =>
-    createConversation(client, name).then((conversation) =>
-      setConversations([...conversations, conversation])
-    );
+  const onAdd = async (name: string) => {
+    const conversation = await createConversation(client, name);
+    setConversations([...conversations, conversation]);
+  };
 
   return (
     <Theme.Provider theme="default">
-      <Header />
+      <Box
+        alignItems="normal"
+        backgroundColor="colorBackgroundBrandStrong"
+        color="colorTextBrandInverse"
+        padding="space40"
+        height="50px"
+        lineHeight="lineHeight50"
+      >
+        <Text
+          as="h1"
+          variant="heading10"
+          marginBottom="space0"
+          color="colorTextBrandInverse"
+          fontSize="fontSize70"
+        >
+          <ProductConversationsIcon
+            display="inline-block"
+            decorative={true}
+            title="Conversations"
+          />{" "}
+          Conversations
+        </Text>
+      </Box>
       <Flex grow shrink basis="auto">
         <Box minWidth="275px" display="flex" alignSelf="stretch">
           <Box padding="space50" backgroundColor="colorBackground">
             <Box as="ul" listStyleType="none" margin="space0" padding="space0">
               {conversations.map((conversation) => (
-                <ConversationListItem
+                <ConversationItem
                   key={conversation.sid}
                   conversation={conversation}
                   onSelect={() => setActiveConversation(conversation)}
@@ -105,7 +127,7 @@ export default function App({ client }: { client: Client }) {
   );
 }
 
-function ConversationListItem({
+function ConversationItem({
   conversation,
   onSelect,
   onDelete,
@@ -139,7 +161,6 @@ function ConversationListItem({
           <DeleteIcon decorative={false} title="Delete" />
         </Button>
       </Flex>
-
       <AlertDialog
         heading="Delete Conversation"
         isOpen={isOpen}
@@ -152,34 +173,6 @@ function ConversationListItem({
         Are you sure you want to delete this conversation? This action cannot be
         undone.
       </AlertDialog>
-    </Box>
-  );
-}
-
-function Header() {
-  return (
-    <Box
-      alignItems="normal"
-      backgroundColor="colorBackgroundBrandStrong"
-      color="colorTextBrandInverse"
-      padding="space40"
-      height="50px"
-      lineHeight="lineHeight50"
-    >
-      <Text
-        as="h1"
-        variant="heading10"
-        marginBottom="space0"
-        color="colorTextBrandInverse"
-        fontSize="fontSize70"
-      >
-        <ProductConversationsIcon
-          display="inline-block"
-          decorative={true}
-          title="Conversations"
-        />{" "}
-        Conversations
-      </Text>
     </Box>
   );
 }

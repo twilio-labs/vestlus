@@ -21,7 +21,7 @@ export default function ParticipantsView({
   return (
     <FormPillGroup {...pillState} aria-label="Conversation participants:">
       {participants.map((participant) => (
-        <ParticipantListItem
+        <ParticipantItem
           key={participant.sid}
           participant={participant}
           pillState={pillState}
@@ -33,7 +33,7 @@ export default function ParticipantsView({
   );
 }
 
-function ParticipantListItem({
+function ParticipantItem({
   pillState,
   participant,
   onDelete,

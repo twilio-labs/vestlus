@@ -8,11 +8,7 @@ import SessionContext, {
   SessionContextType,
 } from "../containers/SessionContext";
 import { Client, Conversation, Participant } from "@twilio/conversations";
-
-// This is used to fix attributes on a participant when it comes back after adding
-type MutableParticipant = {
-  -readonly [K in keyof Participant]: Participant[K];
-};
+import { fixParticipantAttributes } from "../utils/fixParticipantAttributes";
 
 async function addParticipant(
   conversation: Conversation,
@@ -60,20 +56,13 @@ export default function ConversationView({
   }, [conversation]);
 
   const onAddParticipant = async (address: string, proxyAddress: string) => {
-    const participant = (await addParticipant(
+    const participant = await addParticipant(
       conversation,
       address,
       proxyAddress
-    )) as MutableParticipant; // Cast for the workaround
-
-    // This is a workaround for a bug, where the attributes come back as a string rather than the object
-    // https://issues.corp.twilio.com/browse/RTDSDK-3278
-    const attributes = JSON.parse(participant.attributes as string) as Record<
-      string,
-      unknown
-    >;
-    participant.attributes = attributes;
-    setParticipants([...participants, participant as Participant]); // Cast for the workaround
+    );
+    fixParticipantAttributes(participant);
+    setParticipants([...participants, participant]);
   };
 
   const onRemoveParticipant = async (participant: Participant) => {
