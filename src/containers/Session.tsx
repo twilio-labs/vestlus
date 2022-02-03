@@ -19,13 +19,19 @@ export default class Session extends React.Component<Props, State> {
   }
 
   async componentDidMount(): Promise<void> {
-    const response = await fetch("/session");
-    const session = (await response.json()) as SessionContextType;
+    try {
+      const response = await fetch("/session");
+      const session = (await response.json()) as SessionContextType;
 
-    this.setState({
-      loaded: true,
-      session,
-    });
+      this.setState({
+        loaded: true,
+        session,
+      });
+    } catch (err) {
+      console.error(err);
+
+      //window.location.href = "/login";
+    }
   }
 
   render() {

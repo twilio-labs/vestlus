@@ -1,15 +1,16 @@
-import express from "express";
 import dotenv from "dotenv";
 import openid from "express-openid-connect";
 import createSession from "./createSession.js";
-import { createProxyMiddleware } from "http-proxy-middleware";
+import { createAppServer } from "@stanlemon/server";
 
 dotenv.config();
 
 const { auth, requiresAuth } = openid;
 
-const app = express();
 const port = process.env.PORT || 3000;
+
+const app = createAppServer({ port });
+
 // TODO. This should be derived from a host, protocol and the previously designated port
 const baseURL = process.env.BASE_URL || `http://localhost:${port}`;
 
@@ -18,35 +19,21 @@ app.use(
     baseURL,
     authRequired: true,
     auth0Logout: true,
-    routes: {
-      // Disable default login route so we can do special handling when in dev
-      login: false,
-    },
   })
 );
 
-app.get("/dev", (req, res) => {
-  res.redirect("http://localhost:8080/");
-});
-
-app.get("/ping", (req, res) => {
-  res.json({
-    isAuthenticated: req.oidc.isAuthenticated(),
-  });
-});
-
-app.get("/login", (req, res) => {
-  const opts = {};
-  if (req.query && req.query.dev && req.query.dev === "1") {
-    opts.returnTo = "http://localhost:3001/dev";
-  }
-  return res.oidc.login(opts);
-});
+// Find the index route we get for free from the server component
+const indexRoute = app._router.stack.filter((r) => r.route?.path === "/");
+// Remove that route from the stack in express
+app._router.stack = app._router.stack.filter((r) => r.route?.path !== "/");
+// Put that route back, but add an auth check
+app.get("/", requiresAuth(), (req, res, next) => indexRoute.handle);
 
 app.get("/session", requiresAuth(), async (req, res, next) => {
   const session = await createSession(
     process.env.TWILIO_ACCOUNT_SID,
     process.env.TWILIO_API_KEY,
+
     process.env.TWILIO_API_SECRET,
     req.oidc.user.nickname
   );
@@ -55,30 +42,4 @@ app.get("/session", requiresAuth(), async (req, res, next) => {
     ...session,
     user: req.oidc.user,
   });
-});
-
-// TODO: This should only be done in prod
-//app.use(express.static("./dist"));
-
-//app.use(express.static("./dist"));
-// TODO: This should only be done in dev
-app.use(
-  "/*.js",
-  createProxyMiddleware({
-    target: "http://localhost:8080/",
-    changeOrigin: true,
-  })
-);
-
-// TODO: This should only be done in dev
-app.use(
-  "/",
-  createProxyMiddleware({
-    target: "http://localhost:8080/",
-    changeOrigin: true,
-  })
-);
-
-app.listen(port, () => {
-  console.log(`Listening at ${baseURL}`);
 });

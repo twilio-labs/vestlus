@@ -11,8 +11,7 @@ export default async function createSession(
 ) {
   const client = twilio(apiKey, apiSecret, { accountSid });
 
-  // Grab the first conversations service.
-  // If there are none, should we create it?
+  // Grab the first conversations service. In the future you should be able to choose this.
   const { sid: serviceSid } = (
     await client.conversations.services.list({ limit: 1 })
   )?.[0];

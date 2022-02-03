@@ -6,7 +6,6 @@ type MutableParticipant = {
 
 export function fixParticipantAttributes(participant: Participant): void {
   // This is a workaround for a bug, where the attributes come back as a string rather than the object
-  // https://issues.corp.twilio.com/browse/RTDSDK-3278
   const attributes = JSON.parse(participant.attributes as string) as Record<
     string,
     unknown
