@@ -106,7 +106,7 @@ export default class MessagesView extends React.Component<
           borderRadius="borderRadius30"
         >
           <ChatFeed
-            maxHeight="calc(100vh - 350px)"
+            maxHeight="calc(100vh - 375px)"
             messages={this.state.messages} // Array: list of message objects
             isTyping={false} // Boolean: is the recipient typing
             hasInputField={false} // Boolean: use our input, or use your own

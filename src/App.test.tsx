@@ -2,9 +2,14 @@ import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import App from "./App";
+import { Client } from "@twilio/conversations";
+
+jest.mock("@twilio/conversations");
 
 test("<App/>", () => {
-  render(<App />);
+  const client = new Client("token");
+
+  render(<App client={client} />);
 
   // The header is present
   expect(screen.getByRole("heading")).toHaveTextContent("Hello World!");

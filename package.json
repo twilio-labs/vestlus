@@ -9,19 +9,20 @@
     "lint:format": "eslint --fix --ext js,jsx,ts,tsx ./src/"
   },
   "dependencies": {
-    "@stanlemon/server": "^0.1.1",
-    "@stanlemon/webdev": "0.1.12",
-    "@twilio-paste/core": "10.20.0",
-    "@twilio-paste/icons": "5.9.0",
+    "@stanlemon/server": "^0.1.2",
+    "@stanlemon/webdev": "0.1.14",
+    "@twilio-paste/core": "11.0.1",
+    "@twilio-paste/icons": "6.1.0",
     "@twilio/conversations": "2.0.1",
-    "@types/luxon": "2.0.9",
     "dotenv": "16.0.0",
-    "express-openid-connect": "2.6.0",
-    "luxon": "2.3.0",
+    "express-openid-connect": "2.7.0",
+    "luxon": "2.3.1",
     "react-chat-ui": "0.4.0",
-    "twilio": "3.73.1"
+    "twilio": "3.75.0"
   },
   "devDependencies": {
+    "@types/jest": "27.4.1",
+    "@types/luxon": "2.0.9",
     "nodemon": "2.0.15"
   }
 }

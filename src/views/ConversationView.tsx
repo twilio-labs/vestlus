@@ -8,7 +8,6 @@ import SessionContext, {
   SessionContextType,
 } from "../containers/SessionContext";
 import { Client, Conversation, Participant } from "@twilio/conversations";
-import { fixParticipantAttributes } from "../utils/fixParticipantAttributes";
 
 async function addParticipant(
   conversation: Conversation,
@@ -55,19 +54,20 @@ export default function ConversationView({
       .catch((err) => console.error(err));
   }, [conversation]);
 
-  const onAddParticipant = async (address: string, proxyAddress: string) => {
-    const participant = await addParticipant(
-      conversation,
-      address,
-      proxyAddress
-    );
-    fixParticipantAttributes(participant);
+  conversation.on("participantJoined", (participant) => {
     setParticipants([...participants, participant]);
+  });
+
+  conversation.on("participantLeft", (participant) => {
+    setParticipants(participants.filter((p) => participant.sid !== p.sid));
+  });
+
+  const onAddParticipant = async (address: string, proxyAddress: string) => {
+    await addParticipant(conversation, address, proxyAddress);
   };
 
   const onRemoveParticipant = async (participant: Participant) => {
     await removeParticipant(participant);
-    setParticipants(participants.filter((p) => p.sid !== participant.sid));
   };
 
   return (

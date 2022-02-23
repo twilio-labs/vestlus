@@ -54,27 +54,30 @@ export default function App({ client }: { client: Client }) {
   return (
     <Theme.Provider theme="default">
       <Box
+        display="flex"
         alignItems="normal"
-        backgroundColor="colorBackgroundBrandStrong"
+        backgroundColor="colorBackgroundPrimaryStrongest"
         color="colorTextBrandInverse"
         padding="space40"
-        height="50px"
-        lineHeight="lineHeight50"
+        height="75px"
       >
-        <Text
-          as="h1"
-          variant="heading10"
-          marginBottom="space0"
-          color="colorTextBrandInverse"
-          fontSize="fontSize70"
-        >
+        <Flex vAlignContent="center" paddingLeft="space50">
           <ProductConversationsIcon
+            size="sizeIcon80"
             display="inline-block"
             decorative={true}
             title="Conversations"
-          />{" "}
-          Conversations
-        </Text>
+          />
+          <Text
+            as="span"
+            color="colorTextBrandInverse"
+            fontSize="fontSize50"
+            fontWeight="fontWeightBold"
+            marginLeft="space30"
+          >
+            Conversations
+          </Text>
+        </Flex>
       </Box>
       <Flex grow shrink basis="auto">
         <Box minWidth="275px" display="flex" alignSelf="stretch">
@@ -111,7 +114,7 @@ export default function App({ client }: { client: Client }) {
             padding: 20,
             display: "flex",
             flexFlow: "column",
-            height: "calc(100vh - 50px)",
+            height: "calc(100vh - 75px)",
             width: "100%",
           }}
         >
