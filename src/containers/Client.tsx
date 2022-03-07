@@ -1,6 +1,6 @@
 import React from "react";
 import { Client as TwilioClient } from "@twilio/conversations";
-import App from "../App";
+import Conversations from "../views/Conversations";
 
 type Props = {
   token: string | null;
@@ -41,6 +41,6 @@ export default class Client extends React.Component<Props, State> {
     if (!this.state.initialized) {
       return <></>;
     }
-    return <App client={this.client} />;
+    return <Conversations client={this.client} />;
   }
 }

@@ -1,45 +1,40 @@
 import dotenv from "dotenv";
-import openid from "express-openid-connect";
 import createSession from "./createSession.js";
-import { createAppServer } from "@stanlemon/server";
+import { createAppServer, SimpleUsersDao } from "@stanlemon/server-with-auth";
+import Joi from "joi";
 
 dotenv.config();
 
-const { auth, requiresAuth } = openid;
-
 const port = process.env.PORT || 3000;
 
-const app = createAppServer({ port });
+const schema = Joi.object({
+  name: Joi.string().required().label("Name"),
+  email: Joi.string().email().required().label("Email"),
+  username: Joi.string().required().label("Username"),
+  password: Joi.string().required().min(8).max(64).label("Password"),
+});
 
-// TODO. This should be derived from a host, protocol and the previously designated port
-const baseURL = process.env.BASE_URL || `http://localhost:${port}`;
+const dao = new SimpleUsersDao();
 
-app.use(
-  auth({
-    baseURL,
-    authRequired: true,
-    auth0Logout: true,
-  })
-);
+const app = createAppServer({
+  port,
+  webpack: "http://localhost:8080",
+  secure: ["/api/"],
+  schema,
+  ...dao,
+});
 
-// Find the index route we get for free from the server component
-const indexRoute = app._router.stack.filter((r) => r.route?.path === "/");
-// Remove that route from the stack in express
-app._router.stack = app._router.stack.filter((r) => r.route?.path !== "/");
-// Put that route back, but add an auth check
-app.get("/", requiresAuth(), (req, res, next) => indexRoute.handle);
+app.get("/api/session", async (req, res, next) => {
+  const user = await dao.getUserById(req.user);
 
-app.get("/session", requiresAuth(), async (req, res, next) => {
   const session = await createSession(
     process.env.TWILIO_ACCOUNT_SID,
     process.env.TWILIO_API_KEY,
-
     process.env.TWILIO_API_SECRET,
-    req.oidc.user.nickname
+    user.username
   );
 
   res.json({
     ...session,
-    user: req.oidc.user,
   });
 });

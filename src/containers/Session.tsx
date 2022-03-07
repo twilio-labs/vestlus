@@ -1,4 +1,5 @@
 import React from "react";
+import { UserSessionContext } from "../containers/UserSessionContext";
 import Client from "./Client";
 import SessionContext, { SessionContextType } from "./SessionContext";
 
@@ -8,10 +9,12 @@ type State = {
   loaded: boolean;
   session: SessionContextType;
 };
-export default class Session extends React.Component<Props, State> {
+
+export default class Session extends React.PureComponent<Props, State> {
+  static contextType = UserSessionContext;
+
   constructor(props: Props) {
     super(props);
-
     this.state = {
       loaded: false,
       session: null,
@@ -20,7 +23,14 @@ export default class Session extends React.Component<Props, State> {
 
   async componentDidMount(): Promise<void> {
     try {
-      const response = await fetch("/session");
+      console.log(this.context?.session?.token);
+      const response = await fetch("/api/session", {
+        headers: {
+          Authorization: `Bearer ${this.context?.session?.token || ""}`,
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
       const session = (await response.json()) as SessionContextType;
 
       this.setState({
@@ -29,14 +39,16 @@ export default class Session extends React.Component<Props, State> {
       });
     } catch (err) {
       console.error(err);
-
-      //window.location.href = "/login";
     }
   }
 
   render() {
     if (!this.state.loaded) {
-      return <em>Loading...</em>;
+      return (
+        <p style={{ padding: "10px" }}>
+          <em>Loading...</em>
+        </p>
+      );
     }
 
     return (

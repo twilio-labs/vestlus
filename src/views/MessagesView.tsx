@@ -43,13 +43,16 @@ export default class MessagesView extends React.Component<
   async loadMessages() {
     const { items: messages } = await this.props.conversation.getMessages();
     this.setState({
-      messages: messages.map(
-        (message: Message) =>
-          new ChatMessage({
-            id: this.context?.user.nickname === message.author ? 0 : 1,
-            message: message.body,
-          })
+      messages: messages.map((message: Message) =>
+        this.makeChatMessage(message)
       ),
+    });
+  }
+
+  makeChatMessage(message) {
+    return new ChatMessage({
+      id: this.context?.user?.name === message.author ? 0 : 1,
+      message: message.body,
     });
   }
 
@@ -57,13 +60,7 @@ export default class MessagesView extends React.Component<
     conversation.on("messageAdded", (message) => {
       this.setState((state, props) => {
         const result = {
-          messages: [
-            ...state.messages,
-            new ChatMessage({
-              id: this.context?.user.nickname === message.author ? 0 : 1,
-              message: message.body,
-            }),
-          ],
+          messages: [...state.messages, this.makeChatMessage(message)],
         };
         return result;
       });

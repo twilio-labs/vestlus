@@ -1,28 +1,30 @@
 {
   "type": "module",
   "scripts": {
-    "start": "webpack serve",
-    "dev": "nodemon server.js",
-    "build": "NODE_ENV=production webpack",
+    "start": "node ./server.js",
+    "dev": "NODE_ENV=development nodemon --ignore ./db.json ./server.js",
+    "webpack:start": "NODE_ENV=development webpack serve",
+    "webpack:build": "NODE_ENV=production webpack",
     "test": "jest",
     "lint": "eslint --ext js,jsx,ts,tsx ./src/",
     "lint:format": "eslint --fix --ext js,jsx,ts,tsx ./src/"
   },
   "dependencies": {
-    "@stanlemon/server": "^0.1.2",
-    "@stanlemon/webdev": "0.1.14",
-    "@twilio-paste/core": "11.0.1",
-    "@twilio-paste/icons": "6.1.0",
-    "@twilio/conversations": "2.0.1",
+    "@stanlemon/server": "0.2.0",
+    "@stanlemon/server-with-auth": "^0.1.0",
+    "@stanlemon/webdev": "0.1.15",
+    "@twilio-paste/core": "11.1.1",
+    "@twilio-paste/icons": "6.2.0",
+    "@twilio/conversations": "2.1.0",
     "dotenv": "16.0.0",
-    "express-openid-connect": "2.7.0",
+    "express-openid-connect": "2.7.1",
     "luxon": "2.3.1",
     "react-chat-ui": "0.4.0",
     "twilio": "3.75.0"
   },
   "devDependencies": {
     "@types/jest": "27.4.1",
-    "@types/luxon": "2.0.9",
+    "@types/luxon": "2.3.0",
     "nodemon": "2.0.15"
   }
 }
