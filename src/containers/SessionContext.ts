@@ -3,7 +3,8 @@ import React from "react";
 export type SessionContextType = {
   token: string;
   user: {
-    nickname: string;
+    name: string;
+    email: string;
   };
   phoneNumbers: { phoneNumber: string }[];
 } | null;

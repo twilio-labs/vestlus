@@ -12,6 +12,7 @@ type State = {
 
 export default class Session extends React.PureComponent<Props, State> {
   static contextType = UserSessionContext;
+  declare context: React.ContextType<typeof UserSessionContext>;
 
   constructor(props: Props) {
     super(props);
@@ -23,7 +24,6 @@ export default class Session extends React.PureComponent<Props, State> {
 
   async componentDidMount(): Promise<void> {
     try {
-      console.log(this.context?.session?.token);
       const response = await fetch("/api/session", {
         headers: {
           Authorization: `Bearer ${this.context?.session?.token || ""}`,
