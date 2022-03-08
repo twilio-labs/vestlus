@@ -3,7 +3,7 @@ import { DateTime } from "luxon";
 import { Box } from "@twilio-paste/core/";
 import { ChatIcon } from "@twilio-paste/icons/esm/ChatIcon";
 import { ChatFeed, Message as ChatMessage } from "react-chat-ui";
-import SessionContext from "../containers/SessionContext";
+import { UserSessionContext } from "../containers/UserSessionContext";
 import InputAndAdd from "../components/InputAndAdd";
 import { Conversation, Message } from "@twilio/conversations";
 
@@ -15,8 +15,8 @@ type State = {
 };
 
 export default class MessagesView extends React.Component<Props, State> {
-  static contextType = SessionContext;
-  declare context: React.ContextType<typeof SessionContext>;
+  static contextType = UserSessionContext;
+  declare context: React.ContextType<typeof UserSessionContext>;
 
   constructor(props: Props) {
     super(props);
@@ -47,7 +47,7 @@ export default class MessagesView extends React.Component<Props, State> {
 
   makeChatMessage(message: Message) {
     return new ChatMessage({
-      id: this.context?.user?.name === message.author ? 0 : 1,
+      id: this.context?.session?.user?.username === message.author ? 0 : 1,
       message: message.body || "",
     });
   }

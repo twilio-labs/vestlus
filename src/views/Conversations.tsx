@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Theme } from "@twilio-paste/core/theme";
 import { NewIcon } from "@twilio-paste/icons/esm/NewIcon";
 import { Box, Button, Flex, AlertDialog } from "@twilio-paste/core/";
@@ -6,6 +6,7 @@ import { DeleteIcon } from "@twilio-paste/icons/esm/DeleteIcon";
 import { Client, Conversation } from "@twilio/conversations";
 import InputAndAdd from "../components/InputAndAdd";
 import ConversationView from "./ConversationView";
+import { UserSessionContext } from "../containers/UserSessionContext";
 
 async function getConversations(client: Client) {
   const conversations = await client.getSubscribedConversations();
@@ -36,6 +37,10 @@ export default function App({ client }: { client: Client }) {
   const [activeConversation, setActiveConversation] =
     useState<Conversation | null>(null);
 
+  const { setSession } = useContext(UserSessionContext) || {
+    setSession: () => {},
+  };
+
   useEffect(() => {
     getConversations(client)
       .then((conversations) => {
@@ -49,6 +54,11 @@ export default function App({ client }: { client: Client }) {
       const conversation = await createConversation(client, name);
       setConversations([...conversations, conversation]);
     })(name);
+  };
+
+  const logout = () => {
+    setSession(null);
+    localStorage.removeItem("session");
   };
 
   return (
@@ -85,6 +95,11 @@ export default function App({ client }: { client: Client }) {
               }
               onAdd={onAdd}
             />
+            <Box paddingTop="space180" textAlign="center">
+              <Button variant="reset" onClick={logout}>
+                Logout
+              </Button>
+            </Box>
           </Box>
         </Box>
         <div
