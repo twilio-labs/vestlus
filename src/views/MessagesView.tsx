@@ -46,7 +46,7 @@ export default class MessagesView extends React.Component<Props, State> {
   makeChatMessage(message: Message) {
     return new ChatMessage({
       id: this.context?.user?.name === message.author ? 0 : 1,
-      message: message.body,
+      message: message.body || "",
     });
   }
 
