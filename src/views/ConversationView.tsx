@@ -62,12 +62,16 @@ export default function ConversationView({
     setParticipants(participants.filter((p) => participant.sid !== p.sid));
   });
 
-  const onAddParticipant = async (address: string, proxyAddress: string) => {
-    await addParticipant(conversation, address, proxyAddress);
+  const onAddParticipant = (address: string, proxyAddress: string) => {
+    void (async (address: string, proxyAddress: string) => {
+      await addParticipant(conversation, address, proxyAddress);
+    })(address, proxyAddress);
   };
 
-  const onRemoveParticipant = async (participant: Participant) => {
-    await removeParticipant(participant);
+  const onRemoveParticipant = (participant: Participant) => {
+    void (async (participant: Participant) => {
+      await removeParticipant(participant);
+    })(participant);
   };
 
   return (

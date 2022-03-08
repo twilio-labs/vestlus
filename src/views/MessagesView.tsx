@@ -30,8 +30,10 @@ export default class MessagesView extends React.Component<Props, State> {
     return DateTime.fromJSDate(date).toLocaleString(DateTime.DATETIME_SHORT);
   }
 
-  onAddMessage = async (message: string) => {
-    await this.props.conversation.sendMessage(message);
+  onAddMessage = (message: string) => {
+    void (async (message: string) => {
+      await this.props.conversation.sendMessage(message);
+    })(message);
   };
 
   async loadMessages() {

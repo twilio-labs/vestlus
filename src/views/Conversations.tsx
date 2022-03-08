@@ -44,9 +44,11 @@ export default function App({ client }: { client: Client }) {
       .catch((err) => console.error(err));
   }, [client]);
 
-  const onAdd = async (name: string) => {
-    const conversation = await createConversation(client, name);
-    setConversations([...conversations, conversation]);
+  const onAdd = (name: string) => {
+    void (async (name: string) => {
+      const conversation = await createConversation(client, name);
+      setConversations([...conversations, conversation]);
+    })(name);
   };
 
   return (
@@ -119,10 +121,12 @@ function ConversationItem({
   const [isOpen, setIsOpen] = useState(false);
   const handleOpen = () => setIsOpen(true);
   const handleDismiss = () => setIsOpen(false);
-  const handleClose = async () => {
-    setIsOpen(false);
-    await deleteConversation(conversation);
-    onDelete(conversation);
+  const handleClose = () => {
+    void (async () => {
+      setIsOpen(false);
+      await deleteConversation(conversation);
+      onDelete(conversation);
+    })();
   };
 
   return (

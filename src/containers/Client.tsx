@@ -28,9 +28,6 @@ export default class Client extends React.Component<Props, State> {
     // Before you use the client, subscribe to the `'stateChanged'` event and wait
     // for the `'initialized'` state to be reported.
     this.client.on("stateChanged", (state) => {
-      // eslint-disable-next-line no-console
-      console.log("state = ", JSON.stringify(state));
-
       if (state === "initialized") {
         this.setState({ initialized: true });
       }

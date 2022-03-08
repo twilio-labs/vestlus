@@ -49,8 +49,6 @@ export default function RegisterView() {
           status: number;
           data: Record<string, unknown>;
         }) => {
-          console.log(ok, status, data);
-
           if (ok) {
             setSession(data as UserSession);
           } else {
