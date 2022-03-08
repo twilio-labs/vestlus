@@ -2,7 +2,8 @@
   "type": "module",
   "scripts": {
     "start": "node ./server.js",
-    "dev": "NODE_ENV=development nodemon --ignore ./db.json ./server.js",
+    "dev": "concurrently npm:serve npm:webpack:start",
+    "serve": "NODE_ENV=development nodemon --ignore ./db.json ./server.js",
     "webpack:start": "NODE_ENV=development webpack serve",
     "webpack:build": "NODE_ENV=production webpack",
     "test": "jest",
@@ -25,6 +26,7 @@
   "devDependencies": {
     "@types/jest": "27.4.1",
     "@types/luxon": "2.3.0",
+    "concurrently": "7.0.0",
     "nodemon": "2.0.15"
   }
 }
