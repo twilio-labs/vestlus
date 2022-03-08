@@ -24,6 +24,15 @@ export default function App() {
   const contextValue = { session, setSession };
 
   useEffect(() => {
+    const cachedSession = JSON.parse(
+      localStorage.getItem("session") as string
+    ) as UserSession;
+
+    if (cachedSession) {
+      setSession(cachedSession);
+      return;
+    }
+
     fetch("/auth/session", {
       headers: {
         Authorization: `Bearer ${session?.token || ""}`,
@@ -39,6 +48,7 @@ export default function App() {
       })
       .then((response) => response.json())
       .then((session: UserSession) => {
+        localStorage.setItem("session", JSON.stringify(session));
         setSession(session);
       })
       .catch((err) => {
