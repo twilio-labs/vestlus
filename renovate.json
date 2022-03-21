@@ -5,6 +5,6 @@
   ],
   "rangeStrategy": "bump",
   "schedule": [
-    "after 8am and before 5pm every Thursday"
+    "after 8am and before 5pm on Thursday"
   ]
 }
