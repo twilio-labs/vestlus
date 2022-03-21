@@ -3,7 +3,7 @@ import { Heading, Box } from "@twilio-paste/core/";
 import InputAndAdd from "../components/InputAndAdd";
 import ParticipantsView from "./ParticipantsView";
 import MessagesView from "./MessagesView";
-import { UserIcon } from "@twilio-paste/icons/esm/UserIcon";
+import { UserIcon } from "@twilio-paste/icons/cjs/UserIcon";
 import SessionContext, {
   SessionContextType,
 } from "../containers/SessionContext";

@@ -1,5 +1,5 @@
 import { Box, Flex, Text } from "@twilio-paste/core/";
-import { ProductConversationsIcon } from "@twilio-paste/icons/esm/ProductConversationsIcon";
+import { ProductConversationsIcon } from "@twilio-paste/icons/cjs/ProductConversationsIcon";
 
 export default function Header() {
   return (

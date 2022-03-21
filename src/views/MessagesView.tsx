@@ -1,7 +1,7 @@
 import React from "react";
 import { DateTime } from "luxon";
 import { Box } from "@twilio-paste/core/";
-import { ChatIcon } from "@twilio-paste/icons/esm/ChatIcon";
+import { ChatIcon } from "@twilio-paste/icons/cjs/ChatIcon";
 import { ChatFeed, Message as ChatMessage } from "react-chat-ui";
 import { UserSessionContext } from "../containers/UserSessionContext";
 import InputAndAdd from "../components/InputAndAdd";
