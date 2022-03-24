@@ -5,6 +5,17 @@
   ],
   "rangeStrategy": "bump",
   "schedule": [
-    "after 8am and before 5pm on Thursday"
+    "every weekday"
+  ],
+  "packageRules": [
+    {
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "digest"
+      ],
+      "automerge": true
+    }
   ]
 }
