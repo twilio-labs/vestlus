@@ -12,6 +12,7 @@ type Props = {
 };
 type State = {
   messages: ChatMessage[];
+  files: FileList | null;
 };
 
 export default class MessagesView extends React.Component<Props, State> {
@@ -23,6 +24,7 @@ export default class MessagesView extends React.Component<Props, State> {
 
     this.state = {
       messages: [],
+      files: null,
     };
   }
 
@@ -32,8 +34,28 @@ export default class MessagesView extends React.Component<Props, State> {
 
   onAddMessage = (message: string) => {
     void (async (message: string) => {
-      await this.props.conversation.sendMessage(message);
+      const messageBuilder = this.props.conversation
+        .prepareMessage()
+        .setBody(message);
+
+      if (this.state.files) {
+        for (let i = 0; i < this.state.files.length; i++) {
+          const file = this.state.files[i];
+          const formData = new FormData();
+          formData.append("media", file, file.name);
+
+          messageBuilder.addMedia(formData);
+        }
+      }
+
+      await messageBuilder.build().send();
     })(message);
+  };
+
+  onAddMedia = (e: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({
+      files: e.target.files,
+    });
   };
 
   async loadMessages() {
@@ -49,28 +71,56 @@ export default class MessagesView extends React.Component<Props, State> {
       pager = pager.hasPrevPage ? await pager.prevPage() : null;
     }
 
+    const chatMessages = [];
+
+    for (let i = 0; i < messages.length; i++) {
+      chatMessages.push(await this.makeChatMessage(messages[i]));
+    }
+
     this.setState({
-      messages: messages.map((message: Message) =>
-        this.makeChatMessage(message)
-      ),
+      messages: chatMessages,
     });
   }
 
-  makeChatMessage(message: Message) {
+  async makeChatMessage(message: Message) {
+    let body = message.body || "";
+
+    if (message.type === "media" && message.attachedMedia) {
+      for (let i = 0; i < message.attachedMedia.length; i++) {
+        const media = message.attachedMedia[i];
+        const url = await media.getContentTemporaryUrl();
+
+        body += ` ${url || ""}`;
+
+        // TODO: This doesn't currently work and will be escaped to a string
+        /*
+        if (media.contentType.indexOf("image/") > -1) {
+          body += ` <img src="${url || ""}" />`;
+        } else {
+          body += ` ${url || ""}`;
+        }
+        */
+      }
+    }
+
     return new ChatMessage({
       id: this.context?.session?.user?.username === message.author ? 0 : 1,
-      message: message.body || "",
+      message: body,
     });
   }
 
   addMessageListener(conversation: Conversation) {
     conversation.on("messageAdded", (message) => {
-      this.setState((state, props) => {
-        const result = {
-          messages: [...state.messages, this.makeChatMessage(message)],
-        };
-        return result;
-      });
+      this.makeChatMessage(message)
+        .then((chatMessage) => {
+          this.setState((state, props) => {
+            const result = {
+              messages: [...state.messages, chatMessage],
+            };
+            return result;
+          });
+        })
+        .catch((err) => console.error(err));
     });
   }
 
@@ -142,6 +192,7 @@ export default class MessagesView extends React.Component<Props, State> {
             onAdd={this.onAddMessage}
             button={<ChatIcon decorative={false} title="Send a Message" />}
           />
+          <input type="file" onChange={this.onAddMedia} multiple />
         </Box>
       </>
     );
