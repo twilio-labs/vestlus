@@ -92,11 +92,8 @@ export default class MessagesView extends React.Component<Props, State> {
         <Box
           marginTop="space40"
           marginBottom="space40"
-          padding="space40"
-          borderStyle="solid"
-          borderColor="colorBorderStrong"
-          borderWidth="borderWidth10"
-          borderRadius="borderRadius30"
+          borderRadius="borderRadius20"
+          boxShadow="shadowBorder"
         >
           <div
             style={{
@@ -118,6 +115,12 @@ export default class MessagesView extends React.Component<Props, State> {
                 hasInputField={false} // Boolean: use our input, or use your own
                 showSenderName // show the name of the user who sent the message
                 bubblesCentered={false} //Boolean should the bubbles be centered in the feed?
+                bubbleStyles={{
+                  chatbubble: {
+                    marginLeft: 10,
+                    marginRight: 10,
+                  },
+                }}
               />
             </div>
           </div>

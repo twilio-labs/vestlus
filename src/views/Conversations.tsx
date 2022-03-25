@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { Theme } from "@twilio-paste/core/theme";
 import { NewIcon } from "@twilio-paste/icons/cjs/NewIcon";
-import { Box, Button, Flex, AlertDialog } from "@twilio-paste/core/";
+import { Box, Button, Flex, AlertDialog, Separator } from "@twilio-paste/core/";
 import { DeleteIcon } from "@twilio-paste/icons/cjs/DeleteIcon";
 import { Client, Conversation } from "@twilio/conversations";
 import InputAndAdd from "../components/InputAndAdd";
@@ -80,13 +80,10 @@ export default function App({ client }: { client: Client }) {
               }
               onAdd={onAdd}
             />
-            <Box
-              as="ul"
-              listStyleType="none"
-              margin="space0"
-              padding="space0"
-              paddingTop="space100"
-            >
+
+            <Separator orientation="horizontal" verticalSpacing="space100" />
+
+            <Box as="ul" listStyleType="none" margin="space0" padding="space0">
               {conversations.map((conversation) => (
                 <ConversationItem
                   key={conversation.sid}
@@ -101,7 +98,9 @@ export default function App({ client }: { client: Client }) {
                 />
               ))}
             </Box>
-            <Box paddingTop="space180" textAlign="center">
+            <Separator orientation="horizontal" verticalSpacing="space100" />
+
+            <Box textAlign="center">
               <Button variant="reset" onClick={logout}>
                 Logout
               </Button>
