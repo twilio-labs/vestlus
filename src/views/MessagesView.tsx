@@ -98,14 +98,29 @@ export default class MessagesView extends React.Component<Props, State> {
           borderWidth="borderWidth10"
           borderRadius="borderRadius30"
         >
-          <ChatFeed
-            maxHeight="calc(100vh - 375px)"
-            messages={this.state.messages} // Array: list of message objects
-            isTyping={false} // Boolean: is the recipient typing
-            hasInputField={false} // Boolean: use our input, or use your own
-            showSenderName // show the name of the user who sent the message
-            bubblesCentered={false} //Boolean should the bubbles be centered in the feed?
-          />
+          <div
+            style={{
+              display: "flex",
+              maxHeight: "calc(100vh - 375px)",
+              minHeight: "calc(100vh - 375px)",
+            }}
+          >
+            <div
+              style={{
+                width: "100%",
+                alignSelf: "flex-end",
+              }}
+            >
+              <ChatFeed
+                maxHeight="calc(100vh - 375px)"
+                messages={this.state.messages} // Array: list of message objects
+                isTyping={false} // Boolean: is the recipient typing
+                hasInputField={false} // Boolean: use our input, or use your own
+                showSenderName // show the name of the user who sent the message
+                bubblesCentered={false} //Boolean should the bubbles be centered in the feed?
+              />
+            </div>
+          </div>
         </Box>
         <Box height="60px">
           <InputAndAdd

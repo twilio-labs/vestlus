@@ -72,12 +72,20 @@ export default function App({ client }: { client: Client }) {
       <Flex grow shrink basis="auto">
         <Box minWidth="275px" display="flex" alignSelf="stretch">
           <Box padding="space50" backgroundColor="colorBackground">
+            <InputAndAdd
+              label="Start New Conversation"
+              placeholder="Conversation Name"
+              button={
+                <NewIcon decorative={false} title="Start New Conversation" />
+              }
+              onAdd={onAdd}
+            />
             <Box
               as="ul"
               listStyleType="none"
               margin="space0"
               padding="space0"
-              paddingBottom="space100"
+              paddingTop="space100"
             >
               {conversations.map((conversation) => (
                 <ConversationItem
@@ -93,14 +101,6 @@ export default function App({ client }: { client: Client }) {
                 />
               ))}
             </Box>
-            <InputAndAdd
-              label="Start New conversation"
-              placeholder="Conversation Name"
-              button={
-                <NewIcon decorative={false} title="Start New Conversation" />
-              }
-              onAdd={onAdd}
-            />
             <Box paddingTop="space180" textAlign="center">
               <Button variant="reset" onClick={logout}>
                 Logout

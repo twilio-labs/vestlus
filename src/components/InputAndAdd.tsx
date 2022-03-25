@@ -27,9 +27,11 @@ export default function InputAndAdd({
 
   return (
     <>
-      <Box>
-        <Label htmlFor="item">{label}</Label>
-      </Box>
+      {label && (
+        <Box>
+          <Label htmlFor="item">{label}</Label>
+        </Box>
+      )}
       <Box>
         <Flex>
           <Input
