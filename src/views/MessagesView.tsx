@@ -5,7 +5,7 @@ import { ChatIcon } from "@twilio-paste/icons/cjs/ChatIcon";
 import { ChatFeed, Message as ChatMessage } from "react-chat-ui";
 import { UserSessionContext } from "../containers/UserSessionContext";
 import InputAndAdd from "../components/InputAndAdd";
-import { Conversation, Message } from "@twilio/conversations";
+import { Conversation, Message, Paginator } from "@twilio/conversations";
 
 type Props = {
   conversation: Conversation;
@@ -37,7 +37,18 @@ export default class MessagesView extends React.Component<Props, State> {
   };
 
   async loadMessages() {
-    const { items: messages } = await this.props.conversation.getMessages();
+    const messages: Message[] = [];
+
+    let pager: Paginator<Message> | null =
+      await this.props.conversation.getMessages();
+
+    while (pager?.items) {
+      // eslint-disable-next-line prefer-spread
+      messages.unshift.apply(messages, pager.items);
+
+      pager = pager.hasPrevPage ? await pager.prevPage() : null;
+    }
+
     this.setState({
       messages: messages.map((message: Message) =>
         this.makeChatMessage(message)
