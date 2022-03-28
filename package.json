@@ -1,5 +1,23 @@
 {
+  "name": "vestlus",
+  "version": "0.2.0",
+  "description": "A conversational app.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/twilio-labs/vestlus"
+  },
   "type": "module",
+  "keywords": [
+    "twilio",
+    "conversations",
+    "chat",
+    "vestlus"
+  ],
+  "author": "Stan Lemon <stanlemon@users.noreply.github.com>",
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.13.0"
+  },
   "scripts": {
     "start": "node ./server.js",
     "dev": "concurrently npm:serve npm:webpack:start",
