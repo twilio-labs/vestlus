@@ -4,18 +4,39 @@
     "group:allNonMajor"
   ],
   "rangeStrategy": "bump",
+  "timezone": "America/Indiana/Indianapolis",
   "schedule": [
-    "every weekday"
+    "after 2am and before 7am on Thursday"
   ],
   "packageRules": [
     {
+      "packageNames": [
+        "node"
+      ],
+      "enabled": false
+    },
+    {
+      "matchDatasources": [
+        "npm"
+      ],
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "automerge": true,
+      "automergeType": "pr"
+    },
+    {
+      "matchDatasources": [
+        "npm"
+      ],
       "matchUpdateTypes": [
         "minor",
         "patch",
         "pin",
         "digest"
       ],
-      "automerge": true
+      "automerge": true,
+      "automergeType": "branch"
     }
   ]
 }
