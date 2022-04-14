@@ -18,6 +18,15 @@ export type FormErrors = {
   errors: Record<string, string>;
 };
 
+export type ServerError = {
+  status: number;
+  description: string;
+  body: {
+    status: number;
+    message: string;
+  };
+};
+
 export default function App() {
   const [session, setSession] = useState<UserSession | null>(null);
 

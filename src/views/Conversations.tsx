@@ -1,12 +1,21 @@
 import { useState, useEffect, useContext } from "react";
 import { Theme } from "@twilio-paste/core/theme";
 import { NewIcon } from "@twilio-paste/icons/cjs/NewIcon";
-import { Box, Button, Flex, AlertDialog, Separator } from "@twilio-paste/core/";
+import {
+  Box,
+  Button,
+  Flex,
+  AlertDialog,
+  Separator,
+  Toaster,
+  useToaster,
+} from "@twilio-paste/core/";
 import { DeleteIcon } from "@twilio-paste/icons/cjs/DeleteIcon";
 import { Client, Conversation } from "@twilio/conversations";
 import InputAndAdd from "../components/InputAndAdd";
 import ConversationView from "./ConversationView";
 import { UserSessionContext } from "../containers/UserSessionContext";
+import { ServerError } from "../App";
 
 async function getConversations(client: Client) {
   const conversations = await client.getSubscribedConversations();
@@ -36,6 +45,7 @@ export default function App({ client }: { client: Client }) {
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [activeConversation, setActiveConversation] =
     useState<Conversation | null>(null);
+  const toaster = useToaster();
 
   const { setSession } = useContext(UserSessionContext) || {
     setSession: () => {},
@@ -57,8 +67,16 @@ export default function App({ client }: { client: Client }) {
 
   const onAdd = (name: string) => {
     void (async (name: string) => {
-      const conversation = await createConversation(client, name);
-      setConversations([...conversations, conversation]);
+      try {
+        const conversation = await createConversation(client, name);
+        setConversations([...conversations, conversation]);
+      } catch (e) {
+        const err = e as ServerError;
+        toaster.push({
+          message: err.body.message,
+          variant: "error",
+        });
+      }
     })(name);
   };
 
@@ -125,6 +143,7 @@ export default function App({ client }: { client: Client }) {
           )}
         </div>
       </Flex>
+      <Toaster {...toaster} />
     </Theme.Provider>
   );
 }

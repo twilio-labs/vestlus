@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Heading, Box } from "@twilio-paste/core/";
+import { Heading, Box, useToaster, Toaster } from "@twilio-paste/core/";
 import InputAndAdd from "../components/InputAndAdd";
 import ParticipantsView from "./ParticipantsView";
 import MessagesView from "./MessagesView";
@@ -8,6 +8,7 @@ import SessionContext, {
   SessionContextType,
 } from "../containers/SessionContext";
 import { Client, Conversation, Participant } from "@twilio/conversations";
+import { ServerError } from "../App";
 
 async function addParticipant(
   conversation: Conversation,
@@ -44,6 +45,7 @@ export default function ConversationView({
   conversation: Conversation;
 }) {
   const [participants, setParticipants] = useState<Participant[]>([]);
+  const toaster = useToaster();
 
   useEffect(() => {
     conversation
@@ -64,7 +66,15 @@ export default function ConversationView({
 
   const onAddParticipant = (address: string, proxyAddress: string) => {
     void (async (address: string, proxyAddress: string) => {
-      await addParticipant(conversation, address, proxyAddress);
+      try {
+        await addParticipant(conversation, address, proxyAddress);
+      } catch (e) {
+        const err = e as ServerError;
+        toaster.push({
+          message: err.body.message,
+          variant: "error",
+        });
+      }
     })(address, proxyAddress);
   };
 
@@ -103,6 +113,7 @@ export default function ConversationView({
             </Box>
           </Box>
           <MessagesView conversation={conversation} />
+          <Toaster {...toaster} />
         </>
       )}
     </SessionContext.Consumer>
