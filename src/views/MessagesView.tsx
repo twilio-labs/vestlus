@@ -1,8 +1,18 @@
 import React from "react";
 import { DateTime } from "luxon";
-import { Box } from "@twilio-paste/core/";
+import {
+  Box,
+  ChatMessage,
+  ChatBubble,
+  ChatMessageMeta,
+  ChatMessageMetaItem,
+} from "@twilio-paste/core/";
 import { ChatIcon } from "@twilio-paste/icons/cjs/ChatIcon";
-import { ChatFeed, Message as ChatMessage } from "react-chat-ui";
+import {
+  ChatFeed,
+  Message as MessageData,
+  ChatBubbleProps,
+} from "react-chat-ui";
 import { UserSessionContext } from "../containers/UserSessionContext";
 import InputAndAdd from "../components/InputAndAdd";
 import { Conversation, Message, Paginator } from "@twilio/conversations";
@@ -11,9 +21,55 @@ type Props = {
   conversation: Conversation;
 };
 type State = {
-  messages: ChatMessage[];
+  messages: MessageData[];
   files: FileList | null;
 };
+
+export class ExtendedMessageData extends MessageData {
+  created?: Date | null;
+
+  constructor({
+    id,
+    message,
+    senderName,
+    created,
+  }: {
+    id: number | string;
+    message: string;
+    senderName?: string;
+    created?: Date | null;
+  }) {
+    super({ id, message, senderName });
+    this.created = created || null;
+  }
+}
+
+export function ChatMessageWrapper({
+  message,
+}: ChatBubbleProps & { message: ExtendedMessageData }): React.ReactNode {
+  return (
+    <div style={{ padding: 10 }}>
+      <ChatMessage variant={message.id === 1 ? "inbound" : "outbound"}>
+        <ChatBubble>{message.message}</ChatBubble>
+        <ChatMessageMeta
+          // TODO: FIx and format
+          aria-label={`said by $SENDERNAME at $TIME`}
+        >
+          {message.senderName && (
+            <ChatMessageMetaItem>{message.senderName}</ChatMessageMetaItem>
+          )}
+          {message.created && (
+            <ChatMessageMetaItem>
+              {DateTime.fromJSDate(message.created).toLocaleString(
+                DateTime.TIME_SIMPLE
+              )}
+            </ChatMessageMetaItem>
+          )}
+        </ChatMessageMeta>
+      </ChatMessage>
+    </div>
+  );
+}
 
 export default class MessagesView extends React.Component<Props, State> {
   static contextType = UserSessionContext;
@@ -90,7 +146,8 @@ export default class MessagesView extends React.Component<Props, State> {
         const media = message.attachedMedia[i];
         const url = await media.getContentTemporaryUrl();
 
-        body += ` ${url || ""}`;
+        // TEMP: This needs to be wrapped and handled differently.
+        body += ` ${url?.substring(0, 120) || ""}`;
 
         // TODO: This doesn't currently work and will be escaped to a string
         /*
@@ -103,9 +160,11 @@ export default class MessagesView extends React.Component<Props, State> {
       }
     }
 
-    return new ChatMessage({
+    return new ExtendedMessageData({
       id: this.context?.session?.user?.username === message.author ? 0 : 1,
       message: body,
+      senderName: message.author || "",
+      created: message.dateCreated,
     });
   }
 
@@ -170,18 +229,13 @@ export default class MessagesView extends React.Component<Props, State> {
               }}
             >
               <ChatFeed
+                chatBubble={ChatMessageWrapper}
                 maxHeight="calc(100vh - 375px)"
                 messages={this.state.messages} // Array: list of message objects
                 isTyping={false} // Boolean: is the recipient typing
                 hasInputField={false} // Boolean: use our input, or use your own
-                showSenderName // show the name of the user who sent the message
+                showSenderName={false} // show the name of the user who sent the message
                 bubblesCentered={false} //Boolean should the bubbles be centered in the feed?
-                bubbleStyles={{
-                  chatbubble: {
-                    marginLeft: 10,
-                    marginRight: 10,
-                  },
-                }}
               />
             </div>
           </div>
