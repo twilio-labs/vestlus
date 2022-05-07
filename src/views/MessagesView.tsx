@@ -15,32 +15,43 @@ import { Conversation, Message, Paginator } from "@twilio/conversations";
 type Props = {
   conversation: Conversation;
 };
+
 type State = {
   messages: MessageData[];
   files: FileList | null;
 };
 
+type MediaData = {
+  type: string;
+  url: string;
+  isImage: boolean;
+};
+
 export class MessageData {
   id: number | string;
-  senderName?: string;
+  senderName: string;
   message: string;
-  created?: Date | null;
+  created: Date;
+  media: MediaData[];
 
   constructor({
     id,
     message,
     senderName,
     created,
+    media,
   }: {
     id: number | string;
     message: string;
-    senderName?: string;
-    created?: Date | null;
+    senderName: string;
+    created: Date;
+    media: MediaData[];
   }) {
     this.id = id;
     this.message = message;
     this.senderName = senderName;
-    this.created = created || null;
+    this.created = created;
+    this.media = media;
   }
 }
 
@@ -49,23 +60,32 @@ export function ChatMessageWrapper({
 }: {
   message: MessageData;
 }): React.ReactElement {
+  const sentTime = DateTime.fromJSDate(message.created).toLocaleString(
+    DateTime.TIME_SIMPLE
+  );
+
   return (
     <ChatMessage variant={message.id === 1 ? "inbound" : "outbound"}>
-      <ChatBubble>{message.message}</ChatBubble>
+      <ChatBubble>
+        {message.message}
+        {message.media.map((media, i) => {
+          if (media.isImage) {
+            return <img key={i} width="50%" src={media.url} />;
+          } else {
+            // TODO: Add icon
+            return (
+              <a key={i} href={media.url} target="_blank" rel="noreferrer">
+                Attachment
+              </a>
+            );
+          }
+        })}
+      </ChatBubble>
       <ChatMessageMeta
-        // TODO: FIx and format
-        aria-label={`said by $SENDERNAME at $TIME`}
+        aria-label={`said by ${message.senderName} at ${sentTime}`}
       >
-        {message.senderName && (
-          <ChatMessageMetaItem>{message.senderName}</ChatMessageMetaItem>
-        )}
-        {message.created && (
-          <ChatMessageMetaItem>
-            {DateTime.fromJSDate(message.created).toLocaleString(
-              DateTime.TIME_SIMPLE
-            )}
-          </ChatMessageMetaItem>
-        )}
+        <ChatMessageMetaItem>{message.senderName}</ChatMessageMetaItem>
+        <ChatMessageMetaItem>{sentTime}</ChatMessageMetaItem>
       </ChatMessageMeta>
     </ChatMessage>
   );
@@ -141,24 +161,20 @@ export default class MessagesView extends React.Component<Props, State> {
   }
 
   async makeChatMessage(message: Message) {
-    let body = message.body || "";
+    const body = message.body || "";
+    const created = message.dateCreated || new Date();
+    const media: MediaData[] = [];
 
     if (message.type === "media" && message.attachedMedia) {
       for (let i = 0; i < message.attachedMedia.length; i++) {
-        const media = message.attachedMedia[i];
-        const url = await media.getContentTemporaryUrl();
+        const attachedMedia = message.attachedMedia[i];
+        const url = (await attachedMedia.getContentTemporaryUrl()) || "";
 
-        // TEMP: This needs to be wrapped and handled differently.
-        body += ` ${url?.substring(0, 120) || ""}`;
-
-        // TODO: This doesn't currently work and will be escaped to a string
-        /*
-        if (media.contentType.indexOf("image/") > -1) {
-          body += ` <img src="${url || ""}" />`;
-        } else {
-          body += ` ${url || ""}`;
-        }
-        */
+        media.push({
+          type: attachedMedia.contentType,
+          url,
+          isImage: attachedMedia.contentType.indexOf("image/") > -1,
+        });
       }
     }
 
@@ -166,7 +182,8 @@ export default class MessagesView extends React.Component<Props, State> {
       id: this.context?.session?.user?.username === message.author ? 0 : 1,
       message: body,
       senderName: message.author || "",
-      created: message.dateCreated,
+      created,
+      media,
     });
   }
 
@@ -192,12 +209,6 @@ export default class MessagesView extends React.Component<Props, State> {
 
     this.scrollMessageList();
   }
-
-  /*
-  componentWillUnmount() {
-    // TODO: Remove listeners?
-  }
-  */
 
   scrollMessageList() {
     if (!this.messageListDiv || !this.messageListDiv.current) {
