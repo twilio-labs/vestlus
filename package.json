@@ -30,8 +30,8 @@
     "lint:format": "eslint --fix --ext js,jsx,ts,tsx ./src/"
   },
   "dependencies": {
-    "@stanlemon/server-with-auth": "^0.1.6",
-    "@stanlemon/webdev": "^0.1.50",
+    "@stanlemon/server-with-auth": "^0.1.7",
+    "@stanlemon/webdev": "^0.1.53",
     "@twilio-paste/core": "^13.0.0",
     "@twilio-paste/icons": "^8.0.0",
     "@twilio/conversations": "^2.1.0",
@@ -44,7 +44,7 @@
   "devDependencies": {
     "@testing-library/react": "^12.1.5",
     "@types/luxon": "^2.3.2",
-    "concurrently": "^7.2.0",
+    "concurrently": "^7.2.1",
     "nodemon": "^2.0.16"
   }
 }
