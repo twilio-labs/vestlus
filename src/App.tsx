@@ -37,14 +37,11 @@ export default function App() {
       localStorage.getItem("session") as string
     ) as UserSession;
 
-    if (cachedSession) {
-      setSession(cachedSession);
-      return;
-    }
+    const token = cachedSession?.token ?? session?.token;
 
     fetch("/auth/session", {
       headers: {
-        Authorization: `Bearer ${session?.token || ""}`,
+        Authorization: `Bearer ${token || ""}`,
         Accept: "application/json",
         "Content-Type": "application/json",
       },

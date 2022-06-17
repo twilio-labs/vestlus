@@ -19,8 +19,8 @@
     "node": ">=16.13.0"
   },
   "scripts": {
-    "start": "concurrently npm:server:start npm:webpack:start",
-    "server:start": "NODE_ENV=development nodemon --ignore ./db.json ./server.js",
+    "start": "concurrently -k npm:server:start npm:webpack:start",
+    "server:start": "node ./server.js",
     "webpack:start": "NODE_ENV=development webpack serve",
     "webpack:build": "NODE_ENV=production webpack",
     "test": "jest",
