@@ -19,7 +19,11 @@ export default function ParticipantsView({
   const pillState = useFormPillState();
 
   return (
-    <FormPillGroup {...pillState} aria-label="Conversation participants:">
+    <FormPillGroup
+      css={{}}
+      {...pillState}
+      aria-label="Conversation participants:"
+    >
       {participants.map((participant) => (
         <ParticipantItem
           key={participant.sid}
