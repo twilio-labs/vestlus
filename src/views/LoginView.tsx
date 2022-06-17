@@ -50,6 +50,7 @@ export default function LoginView() {
         }) => {
           if (ok) {
             setSession(data as UserSession);
+            localStorage.setItem("session", JSON.stringify(data));
           } else {
             setError((data as ErrorMessage).message);
           }
