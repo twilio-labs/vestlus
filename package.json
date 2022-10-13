@@ -29,16 +29,16 @@
     "lint:format": "eslint --fix --ext js,jsx,ts,tsx ./src/"
   },
   "dependencies": {
-    "@stanlemon/server-with-auth": "^0.1.14",
-    "@stanlemon/webdev": "^0.1.69",
+    "@stanlemon/server-with-auth": "^0.1.15",
+    "@stanlemon/webdev": "^0.1.73",
     "@twilio-paste/core": "^14.2.0",
     "@twilio-paste/icons": "^8.1.0",
     "@twilio/conversations": "^2.2.0",
-    "dotenv": "^16.0.2",
-    "luxon": "^3.0.3",
+    "dotenv": "^16.0.3",
+    "luxon": "^3.0.4",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "twilio": "^3.82.1"
+    "twilio": "^3.82.2"
   },
   "devDependencies": {
     "@testing-library/react": "^12.1.5",
