@@ -29,7 +29,7 @@
     "lint:format": "eslint --fix --ext js,jsx,ts,tsx ./src/"
   },
   "dependencies": {
-    "@stanlemon/server-with-auth": "^0.1.19",
+    "@stanlemon/server-with-auth": "^0.1.20",
     "@stanlemon/webdev": "^0.1.80",
     "@twilio-paste/core": "^14.2.0",
     "@twilio-paste/icons": "^8.1.0",
