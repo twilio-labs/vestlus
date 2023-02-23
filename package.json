@@ -30,15 +30,15 @@
   },
   "dependencies": {
     "@stanlemon/server-with-auth": "^0.1.24",
-    "@stanlemon/webdev": "^0.1.87",
+    "@stanlemon/webdev": "^0.1.91",
     "@twilio-paste/core": "^17.7.0",
     "@twilio-paste/icons": "^9.4.3",
-    "@twilio/conversations": "^2.2.1",
+    "@twilio/conversations": "^2.2.2",
     "dotenv": "^16.0.3",
     "luxon": "^3.2.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "twilio": "^4.7.2"
+    "twilio": "^4.8.0"
   },
   "devDependencies": {
     "@testing-library/react": "^12.1.5",
