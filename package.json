@@ -30,20 +30,20 @@
   },
   "dependencies": {
     "@stanlemon/server-with-auth": "^0.1.25",
-    "@stanlemon/webdev": "^0.1.92",
+    "@stanlemon/webdev": "^0.1.95",
     "@twilio-paste/core": "^17.7.0",
     "@twilio-paste/icons": "^9.4.3",
-    "@twilio/conversations": "^2.2.2",
+    "@twilio/conversations": "^2.3.0",
     "dotenv": "^16.0.3",
     "luxon": "^3.3.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "twilio": "^4.8.0"
+    "twilio": "^4.9.0"
   },
   "devDependencies": {
     "@testing-library/react": "^12.1.5",
     "@types/luxon": "^3.2.0",
     "concurrently": "^7.6.0",
-    "nodemon": "^2.0.21"
+    "nodemon": "^2.0.22"
   }
 }
