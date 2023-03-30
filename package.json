@@ -32,7 +32,7 @@
     "@stanlemon/server-with-auth": "^0.1.26",
     "@stanlemon/webdev": "^0.1.97",
     "@twilio-paste/core": "^18.1.0",
-    "@twilio-paste/icons": "^10.0.0",
+    "@twilio-paste/icons": "^11.0.0",
     "@twilio/conversations": "^2.3.0",
     "dotenv": "^16.0.3",
     "luxon": "^3.3.0",
