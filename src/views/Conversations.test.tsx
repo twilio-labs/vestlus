@@ -2,6 +2,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import Conversations from "./Conversations";
 import { Client } from "@twilio/conversations";
+import "@testing-library/jest-dom";
 
 jest.mock("@twilio/conversations");
 
