@@ -35,15 +35,15 @@
     "@twilio-paste/icons": "^11.2.2",
     "@twilio/conversations": "^2.4.1",
     "dotenv": "^16.3.1",
-    "luxon": "^3.3.0",
+    "luxon": "^3.4.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "twilio": "^4.14.0"
+    "twilio": "^4.16.0"
   },
   "devDependencies": {
     "@testing-library/react": "^14.0.0",
-    "@types/luxon": "^3.3.0",
-    "concurrently": "^8.2.0",
+    "@types/luxon": "^3.3.1",
+    "concurrently": "^8.2.1",
     "nodemon": "^3.0.1"
   }
 }
