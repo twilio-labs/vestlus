@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@stanlemon/server-with-auth": "^0.2.9",
-    "@stanlemon/webdev": "^0.1.143",
+    "@stanlemon/webdev": "^0.1.145",
     "@twilio-paste/core": "^20.6.0",
     "@twilio-paste/icons": "^12.2.1",
     "@twilio/conversations": "^2.5.0",
@@ -38,7 +38,7 @@
     "luxon": "^3.4.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "twilio": "^4.19.3"
+    "twilio": "^4.20.0"
   },
   "devDependencies": {
     "@testing-library/react": "^14.1.2",
