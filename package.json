@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@stanlemon/server-with-auth": "^0.3.0",
-    "@stanlemon/webdev": "^0.1.149",
+    "@stanlemon/webdev": "^0.1.151",
     "@twilio-paste/core": "^20.7.0",
     "@twilio-paste/icons": "^12.2.2",
     "@twilio/conversations": "^2.5.0",
@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "@testing-library/react": "^14.1.2",
-    "@types/luxon": "^3.3.8",
+    "@types/luxon": "^3.4.0",
     "concurrently": "^8.2.2",
     "nodemon": "^3.0.2"
   }
