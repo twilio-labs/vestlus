@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import createSession from "./createSession.js";
-import { createAppServer, SimpleUsersDao } from "@stanlemon/server-with-auth";
+import { createAppServer, LowDBUserDao, createLowDb } from "@stanlemon/server-with-auth";
 import Joi from "joi";
 
 dotenv.config();
@@ -14,18 +14,19 @@ const schema = Joi.object({
   password: Joi.string().required().min(8).max(64).label("Password"),
 });
 
-const dao = new SimpleUsersDao();
+const db = createLowDb();
+const dao = new LowDBUserDao(db);
 
 const app = createAppServer({
   port,
   webpack: "http://localhost:8080",
   secure: ["/api/"],
   schema,
-  ...dao,
+  dao,
 });
 
 app.get("/api/session", async (req, res, next) => {
-  const user = await dao.getUserById(req.user);
+  const user = await dao.getUserByUsername(req.user.username);
 
   const session = await createSession(
     process.env.TWILIO_ACCOUNT_SID,

@@ -69,6 +69,8 @@ export default function ConversationView({
       try {
         await addParticipant(conversation, address, proxyAddress);
       } catch (e) {
+        console.error(e);
+
         const err = e as ServerError;
         toaster.push({
           message: err.body.message,
@@ -101,9 +103,10 @@ export default function ConversationView({
                 label="Add a Participant"
                 onAdd={(address) =>
                   // TODO: The user should be able to select the proxy address from the list
+                  // TODO: Provide a helpful error when there are no phone numbers
                   onAddParticipant(
                     address,
-                    session?.phoneNumbers[0].phoneNumber || ""
+                    session?.phoneNumbers[0]?.phoneNumber || ""
                   )
                 }
                 button={

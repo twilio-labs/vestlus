@@ -24,7 +24,7 @@ export default function RegisterView() {
 
   const onSubmit = () => {
     setErrors({});
-    fetch("/auth/register", {
+    fetch("/auth/signup", {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
