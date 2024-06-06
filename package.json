@@ -29,21 +29,21 @@
     "lint:format": "eslint --fix --ext js,jsx,ts,tsx ./src/"
   },
   "dependencies": {
-    "@stanlemon/server-with-auth": "^0.3.9",
+    "@stanlemon/server-with-auth": "^0.3.10",
     "@stanlemon/webdev": "^0.1.181",
-    "@twilio-paste/core": "^20.12.0",
-    "@twilio-paste/icons": "^12.4.0",
+    "@twilio-paste/core": "^20.13.0",
+    "@twilio-paste/icons": "^12.5.0",
     "@twilio/conversations": "^2.5.0",
     "dotenv": "^16.4.5",
     "luxon": "^3.4.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "twilio": "^5.0.4"
+    "twilio": "^5.1.0"
   },
   "devDependencies": {
     "@testing-library/react": "^15.0.7",
     "@types/luxon": "^3.4.2",
     "concurrently": "^8.2.2",
-    "nodemon": "^3.1.0"
+    "nodemon": "^3.1.3"
   }
 }
