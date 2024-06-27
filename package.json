@@ -29,8 +29,8 @@
     "lint:format": "eslint --fix --ext js,jsx,ts,tsx ./src/"
   },
   "dependencies": {
-    "@stanlemon/server-with-auth": "^0.3.11",
-    "@stanlemon/webdev": "^0.1.183",
+    "@stanlemon/server-with-auth": "^0.3.12",
+    "@stanlemon/webdev": "^0.1.185",
     "@twilio-paste/core": "^20.13.0",
     "@twilio-paste/icons": "^12.5.0",
     "@twilio/conversations": "^2.5.0",
