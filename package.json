@@ -29,7 +29,7 @@
     "lint:format": "eslint --fix --ext js,jsx,ts,tsx ./src/"
   },
   "dependencies": {
-    "@stanlemon/server-with-auth": "^0.3.12",
+    "@stanlemon/server-with-auth": "^0.3.13",
     "@stanlemon/webdev": "^0.1.185",
     "@twilio-paste/core": "^20.13.0",
     "@twilio-paste/icons": "^12.5.0",
@@ -38,7 +38,7 @@
     "luxon": "^3.4.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "twilio": "^5.2.0"
+    "twilio": "^5.2.2"
   },
   "devDependencies": {
     "@testing-library/react": "^16.0.0",
