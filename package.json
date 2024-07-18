@@ -29,10 +29,10 @@
     "lint:format": "eslint --fix --ext js,jsx,ts,tsx ./src/"
   },
   "dependencies": {
-    "@stanlemon/server-with-auth": "^0.3.14",
-    "@stanlemon/webdev": "^0.1.186",
-    "@twilio-paste/core": "^20.13.0",
-    "@twilio-paste/icons": "^12.5.0",
+    "@stanlemon/server-with-auth": "^0.3.15",
+    "@stanlemon/webdev": "^0.1.187",
+    "@twilio-paste/core": "^20.14.0",
+    "@twilio-paste/icons": "^12.6.0",
     "@twilio/conversations": "^2.5.0",
     "dotenv": "^16.4.5",
     "luxon": "^3.4.4",
