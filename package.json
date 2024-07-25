@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@stanlemon/server-with-auth": "^0.3.15",
-    "@stanlemon/webdev": "^0.1.187",
+    "@stanlemon/webdev": "^0.1.189",
     "@twilio-paste/core": "^20.14.0",
     "@twilio-paste/icons": "^12.6.0",
     "@twilio/conversations": "^2.5.0",
