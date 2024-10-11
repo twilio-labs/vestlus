@@ -8,7 +8,6 @@ import {
 } from "../containers/UserSessionContext";
 import Input from "../components/Input";
 
-// eslint-disable-next-line max-lines-per-function
 export default function RegisterView() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [values, setValues] = useState<User>({

@@ -12,10 +12,10 @@ export default async function createSession(
   const client = twilio(apiKey, apiSecret, { accountSid });
 
   // Grab the first conversations service. In the future you should be able to choose this.
-  const { sid: serviceSid } = (
-    await client.conversations.services.list({ limit: 1 })
-  )?.[0];
+  const { sid: serviceSid } =
+    (await client.conversations.v1.services.list({ limit: 1 }))?.[0] ?? null;
 
+  // eslint-disable-next-line no-console
   console.log("Using conversations service " + serviceSid);
 
   const chatGrant = new ChatGrant({

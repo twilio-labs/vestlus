@@ -40,7 +40,6 @@ async function deleteConversation(
   return await conversation.delete();
 }
 
-// eslint-disable-next-line max-lines-per-function
 export default function App({ client }: { client: Client }) {
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [activeConversation, setActiveConversation] =

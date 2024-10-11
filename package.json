@@ -25,8 +25,8 @@
     "webpack:build": "NODE_ENV=production webpack",
     "test": "jest",
     "test:watch": "jest --watch",
-    "lint": "eslint --ext js,jsx,ts,tsx ./src/",
-    "lint:format": "eslint --fix --ext js,jsx,ts,tsx ./src/"
+    "lint": "eslint .",
+    "lint:format": "eslint --fix ."
   },
   "dependencies": {
     "@stanlemon/server-with-auth": "^0.3.20",

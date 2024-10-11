@@ -1,6 +1,10 @@
 import dotenv from "dotenv";
 import createSession from "./createSession.js";
-import { createAppServer, LowDBUserDao, createLowDb } from "@stanlemon/server-with-auth";
+import {
+  createAppServer,
+  LowDBUserDao,
+  createLowDb,
+} from "@stanlemon/server-with-auth";
 import Joi from "joi";
 
 dotenv.config();
