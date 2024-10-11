@@ -16,7 +16,7 @@
   "author": "Stan Lemon <stanlemon@users.noreply.github.com>",
   "license": "MIT",
   "engines": {
-    "node": ">=16.13.0"
+    "node": ">=20.0"
   },
   "scripts": {
     "start": "concurrently -k npm:server:start npm:webpack:start",
@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@stanlemon/server-with-auth": "^0.3.20",
-    "@stanlemon/webdev": "^0.1.201",
+    "@stanlemon/webdev": "^0.2.0",
     "@twilio-paste/core": "^20.16.0",
     "@twilio-paste/icons": "^12.7.0",
     "@twilio/conversations": "^2.6.0",
