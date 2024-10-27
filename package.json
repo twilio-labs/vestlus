@@ -29,8 +29,8 @@
     "lint:format": "eslint --fix ."
   },
   "dependencies": {
-    "@stanlemon/server-with-auth": "^0.3.20",
-    "@stanlemon/webdev": "^0.2.2",
+    "@stanlemon/server-with-auth": "^0.3.21",
+    "@stanlemon/webdev": "^0.2.4",
     "@twilio-paste/core": "^20.16.0",
     "@twilio-paste/icons": "^12.7.0",
     "@twilio/conversations": "^2.6.0",
@@ -38,7 +38,7 @@
     "luxon": "^3.5.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "twilio": "^5.3.4"
+    "twilio": "^5.3.5"
   },
   "devDependencies": {
     "@testing-library/react": "^16.0.1",
