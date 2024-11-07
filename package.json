@@ -29,9 +29,9 @@
     "lint:format": "eslint --fix ."
   },
   "dependencies": {
-    "@stanlemon/server-with-auth": "^0.3.21",
-    "@stanlemon/webdev": "^0.2.4",
-    "@twilio-paste/core": "^20.16.0",
+    "@stanlemon/server-with-auth": "^0.3.24",
+    "@stanlemon/webdev": "^0.2.6",
+    "@twilio-paste/core": "^20.18.0",
     "@twilio-paste/icons": "^12.7.0",
     "@twilio/conversations": "^2.6.0",
     "dotenv": "^16.4.5",
@@ -43,7 +43,7 @@
   "devDependencies": {
     "@testing-library/react": "^16.0.1",
     "@types/luxon": "^3.4.2",
-    "concurrently": "^9.0.1",
+    "concurrently": "^9.1.0",
     "nodemon": "^3.1.7"
   }
 }
