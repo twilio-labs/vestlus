@@ -43,7 +43,7 @@
   "devDependencies": {
     "@testing-library/react": "^16.1.0",
     "@types/luxon": "^3.4.2",
-    "concurrently": "^9.1.0",
+    "concurrently": "^9.1.2",
     "nodemon": "^3.1.9"
   }
 }
