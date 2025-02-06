@@ -31,14 +31,14 @@
   "dependencies": {
     "@stanlemon/server-with-auth": "^0.3.31",
     "@stanlemon/webdev": "^0.2.24",
-    "@twilio-paste/core": "^20.20.0",
-    "@twilio-paste/icons": "^12.8.0",
+    "@twilio-paste/core": "^20.21.0",
+    "@twilio-paste/icons": "^12.9.0",
     "@twilio/conversations": "^2.6.0",
     "dotenv": "^16.4.7",
     "luxon": "^3.5.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "twilio": "^5.4.2"
+    "twilio": "^5.4.3"
   },
   "devDependencies": {
     "@testing-library/react": "^16.2.0",
