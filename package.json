@@ -36,8 +36,8 @@
     "@twilio/conversations": "^2.6.3",
     "dotenv": "^17.2.1",
     "luxon": "^3.7.1",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
     "twilio": "^5.8.0"
   },
   "devDependencies": {
