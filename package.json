@@ -34,6 +34,7 @@
     "@twilio-paste/core": "^21.3.0",
     "@twilio-paste/icons": "^13.0.0",
     "@twilio/conversations": "^2.6.3",
+    "ajv": "^8.17.1",
     "dotenv": "^17.2.1",
     "luxon": "^3.7.1",
     "react": "^19.1.1",
