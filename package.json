@@ -38,7 +38,7 @@
     "luxon": "^3.7.2",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "twilio": "^5.11.1"
+    "twilio": "^5.11.2"
   },
   "devDependencies": {
     "@testing-library/dom": "^10.4.1",
