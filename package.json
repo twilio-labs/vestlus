@@ -33,7 +33,7 @@
     "@stanlemon/webdev": "^0.2.64",
     "@twilio-paste/core": "^21.5.0",
     "@twilio-paste/icons": "^13.1.0",
-    "@twilio/conversations": "^2.6.5",
+    "@twilio/conversations": "^3.0.0",
     "dotenv": "^17.2.3",
     "luxon": "^3.7.2",
     "react": "^19.2.3",
